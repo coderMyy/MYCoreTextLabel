@@ -7,7 +7,8 @@
 </p>
 </p>
 
-1. 静态图文文字混排 </p>
+## 1. 静态图文文字混排 </p>
+
 ```
     MYCoreTextLabel  * coreTextLabel = [[MYCoreTextLabel alloc]init];
     //创建相关属性的模型
