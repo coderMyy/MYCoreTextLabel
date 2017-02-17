@@ -8,3 +8,4 @@
 </p>
 
 1. 静态图文文字混排 </p>
+ ![image](https://github.com/mengyao_block@outlook.com/MYCoreTextLabel/examplePic/image.png)
