@@ -91,7 +91,7 @@
                     link.linkType      = cachelink.linkType;
                 }
                 //处理异常
-                if ((link.linkType == MYLinkTypetTrendLink||link.linkType == MYLinkTypetTopicLink||link.linkType == MYLinkTypetWebLink)&&!self.attribute.shouldShowNormLink) return;
+                if ((link.linkType == MYLinkTypetTrendLink||link.linkType == MYLinkTypetTopicLink||link.linkType == MYLinkTypetWebLink)&&self.attribute.notShowNormalLink) return;
                 
                 self.contentTextView.selectedRange = range;
                 NSArray *selectedRects = [self.contentTextView selectionRectsForRange:self.contentTextView.selectedTextRange];
@@ -208,7 +208,7 @@
                         continue;
                     };
                     
-                    if (!self.attribute.shouldShowNormLink) continue;
+                    if (self.attribute.notShowNormalLink) continue;
                     //常规链接设置属性
                     [self normalLinkAttribute:string range:link.range];
                 }
@@ -294,6 +294,8 @@
         UIView *coverView            = [[UIView alloc]init];
         coverView.backgroundColor    = linkBackColor;
         coverView.alpha              = self.attribute.linkBackAlpha;
+//        CGRect frame                 = rect.rect;
+//        frame.size.height            = self.contentTextView.font.lineHeight;
         coverView.frame              = rect.rect;
         coverView.tag                = linkCoverTag;
         coverView.layer.cornerRadius = 3.f;
@@ -336,6 +338,11 @@
 {
     [attributeStr addAttribute:NSFontAttributeName value:self.attribute.textFont range:NSMakeRange(0, attributeStr.length)];
     [attributeStr addAttribute:NSForegroundColorAttributeName value:self.attribute.textColor range:NSMakeRange(0, attributeStr.length)];
+    NSMutableParagraphStyle *paragra = [[NSMutableParagraphStyle alloc]init];
+    [paragra setLineBreakMode:NSLineBreakByCharWrapping];
+    [paragra setLineSpacing:self.attribute.lineSpacing];
+    [attributeStr addAttribute:NSParagraphStyleAttributeName value:paragra range:NSMakeRange(0, attributeStr.length)];
+    [attributeStr addAttribute:NSKernAttributeName value:@(self.attribute.wordSpacing) range:NSMakeRange(0, attributeStr.length)];
 }
 
 #pragma mark - 高亮关键字设置
@@ -359,6 +366,8 @@
                 keywordView.layer.cornerRadius = 3.f;
                 keywordView.clipsToBounds      = YES;
                 keywordView.tag                = keyWordCoverTag;
+//                CGRect   frame                 = rect.rect;
+//                frame.size.height              = self.contentTextView.font.lineHeight + 2.f;
                 keywordView.frame              = rect.rect;
                 [self insertSubview:keywordView atIndex:0];
             }

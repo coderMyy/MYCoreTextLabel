@@ -25,9 +25,9 @@ typedef NS_ENUM(NSInteger,MYLinkType){
 @property (nonatomic, assign) CGSize imageSize;
 
 /**
- 是否需要展示常规链接  如 http  @xx   #话题#   默认为NO ,如需要展示常规链接，必须赋值为YES
+ 是否需要展示常规链接  如 http  @xx   #话题#   默认为YES ,如不需要展示常规链接，必须赋值为NO
  */
-@property (nonatomic, assign) BOOL shouldShowNormLink;
+@property (nonatomic, assign) BOOL notShowNormalLink;
 /**
  链接点中背景透明度
  */
@@ -43,6 +43,16 @@ typedef NS_ENUM(NSInteger,MYLinkType){
  内容字体颜色（除开链接特殊字以外的内容）,默认黑色
  */
 @property (nonatomic, strong) UIColor *textColor;
+
+/**
+ 内容行间距
+ */
+@property (nonatomic, assign) CGFloat lineSpacing;
+
+/**
+ 字间距
+ */
+@property (nonatomic, assign) CGFloat wordSpacing;
 
 #pragma mark - 常规链接部分属性
 /**
