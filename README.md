@@ -22,8 +22,8 @@
     self.coreTextLabel.frame = CGRectMake(0, 100, size.width, size.height);
     [self.view addSubview:coreTextLabel];
 ```
+![image](https://github.com/coderMyy/MYCoreTextLabel/blob/master/examplePic/image.png)
 </p>
- ![image](https://github.com/coderMyy/MYCoreTextLabel/blob/master/examplePic/image.png)
 </p>
 </p>
 </p>
