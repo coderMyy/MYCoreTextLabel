@@ -29,6 +29,6 @@
 
  @param keyword <#keyWord description#>
  */
-+ (void)keyWord:(NSString *)keyword;
++ (void)keyWord:(NSArray<NSString *> *)keywords;
 
 @end

@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MYAttributeModel.h"
+
+typedef NS_ENUM(NSInteger,MYLinkType){
+    MYLinkTypetTrendLink = 1<<0,
+    MYLinkTypetTopicLink = 2<<0,
+    MYLinkTypetWebLink   = 3<<0,
+    MYLinkTypeCustomLink = 4<<0,
+    MYLinkTypeKeyword    = 5<<0
+};
 
 @interface MYSubCoretextResult : NSObject
 

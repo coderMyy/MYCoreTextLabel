@@ -15,16 +15,15 @@
 		B801264C1E56BFAF006BAF70 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B801264A1E56BFAF006BAF70 /* LaunchScreen.storyboard */; };
 		B80126571E56BFAF006BAF70 /* MYCoreText_ExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126561E56BFAF006BAF70 /* MYCoreText_ExampleTests.m */; };
 		B80126621E56BFAF006BAF70 /* MYCoreText_ExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126611E56BFAF006BAF70 /* MYCoreText_ExampleUITests.m */; };
-		B80126891E56BFF5006BAF70 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B801267E1E56BFF5006BAF70 /* DetailViewController.m */; };
-		B801268A1E56BFF5006BAF70 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126801E56BFF5006BAF70 /* ImageViewController.m */; };
-		B801268B1E56BFF5006BAF70 /* KeywordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126821E56BFF5006BAF70 /* KeywordViewController.m */; };
-		B801268C1E56BFF5006BAF70 /* LinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126841E56BFF5006BAF70 /* LinksViewController.m */; };
-		B801268D1E56BFF5006BAF70 /* showCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126861E56BFF5006BAF70 /* showCell.m */; };
-		B801268E1E56BFF5006BAF70 /* tableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126881E56BFF5006BAF70 /* tableViewModel.m */; };
-		B80126981E56C016006BAF70 /* MYAttributeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126911E56C016006BAF70 /* MYAttributeModel.m */; };
 		B80126991E56C016006BAF70 /* MYCoreTextLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126931E56C016006BAF70 /* MYCoreTextLabel.m */; };
 		B801269A1E56C016006BAF70 /* MYCoretextResultTool.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126951E56C016006BAF70 /* MYCoretextResultTool.m */; };
 		B801269B1E56C016006BAF70 /* MYSubCoretextResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B80126971E56C016006BAF70 /* MYSubCoretextResult.m */; };
+		B8894BE61E816D3100CC06DA /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8894BDB1E816D3100CC06DA /* DetailViewController.m */; };
+		B8894BE71E816D3100CC06DA /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8894BDD1E816D3100CC06DA /* ImageViewController.m */; };
+		B8894BE81E816D3100CC06DA /* KeywordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8894BDF1E816D3100CC06DA /* KeywordViewController.m */; };
+		B8894BE91E816D3100CC06DA /* LinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8894BE11E816D3100CC06DA /* LinksViewController.m */; };
+		B8894BEA1E816D3100CC06DA /* showCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8894BE31E816D3100CC06DA /* showCell.m */; };
+		B8894BEB1E816D3100CC06DA /* tableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8894BE51E816D3100CC06DA /* tableViewModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,26 +60,24 @@
 		B801265D1E56BFAF006BAF70 /* MYCoreText_ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MYCoreText_ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B80126611E56BFAF006BAF70 /* MYCoreText_ExampleUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MYCoreText_ExampleUITests.m; sourceTree = "<group>"; };
 		B80126631E56BFAF006BAF70 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B801267D1E56BFF5006BAF70 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		B801267E1E56BFF5006BAF70 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		B801267F1E56BFF5006BAF70 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
-		B80126801E56BFF5006BAF70 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
-		B80126811E56BFF5006BAF70 /* KeywordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeywordViewController.h; sourceTree = "<group>"; };
-		B80126821E56BFF5006BAF70 /* KeywordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeywordViewController.m; sourceTree = "<group>"; };
-		B80126831E56BFF5006BAF70 /* LinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksViewController.h; sourceTree = "<group>"; };
-		B80126841E56BFF5006BAF70 /* LinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksViewController.m; sourceTree = "<group>"; };
-		B80126851E56BFF5006BAF70 /* showCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = showCell.h; sourceTree = "<group>"; };
-		B80126861E56BFF5006BAF70 /* showCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = showCell.m; sourceTree = "<group>"; };
-		B80126871E56BFF5006BAF70 /* tableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tableViewModel.h; sourceTree = "<group>"; };
-		B80126881E56BFF5006BAF70 /* tableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tableViewModel.m; sourceTree = "<group>"; };
-		B80126901E56C016006BAF70 /* MYAttributeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYAttributeModel.h; sourceTree = "<group>"; };
-		B80126911E56C016006BAF70 /* MYAttributeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYAttributeModel.m; sourceTree = "<group>"; };
 		B80126921E56C016006BAF70 /* MYCoreTextLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYCoreTextLabel.h; sourceTree = "<group>"; };
 		B80126931E56C016006BAF70 /* MYCoreTextLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYCoreTextLabel.m; sourceTree = "<group>"; };
 		B80126941E56C016006BAF70 /* MYCoretextResultTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYCoretextResultTool.h; sourceTree = "<group>"; };
 		B80126951E56C016006BAF70 /* MYCoretextResultTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYCoretextResultTool.m; sourceTree = "<group>"; };
 		B80126961E56C016006BAF70 /* MYSubCoretextResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYSubCoretextResult.h; sourceTree = "<group>"; };
 		B80126971E56C016006BAF70 /* MYSubCoretextResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYSubCoretextResult.m; sourceTree = "<group>"; };
+		B8894BDA1E816D3100CC06DA /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		B8894BDB1E816D3100CC06DA /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		B8894BDC1E816D3100CC06DA /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		B8894BDD1E816D3100CC06DA /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
+		B8894BDE1E816D3100CC06DA /* KeywordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeywordViewController.h; sourceTree = "<group>"; };
+		B8894BDF1E816D3100CC06DA /* KeywordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeywordViewController.m; sourceTree = "<group>"; };
+		B8894BE01E816D3100CC06DA /* LinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksViewController.h; sourceTree = "<group>"; };
+		B8894BE11E816D3100CC06DA /* LinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksViewController.m; sourceTree = "<group>"; };
+		B8894BE21E816D3100CC06DA /* showCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = showCell.h; sourceTree = "<group>"; };
+		B8894BE31E816D3100CC06DA /* showCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = showCell.m; sourceTree = "<group>"; };
+		B8894BE41E816D3100CC06DA /* tableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tableViewModel.h; sourceTree = "<group>"; };
+		B8894BE51E816D3100CC06DA /* tableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tableViewModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,8 +128,8 @@
 		B801263B1E56BFAF006BAF70 /* MYCoreText_Example */ = {
 			isa = PBXGroup;
 			children = (
+				B8894BD91E816D3100CC06DA /* Controllers(各个场景使用说明) */,
 				B801268F1E56C016006BAF70 /* MYCoreTextLabel */,
-				B801267C1E56BFF5006BAF70 /* Controllers */,
 				B801263F1E56BFAF006BAF70 /* AppDelegate.h */,
 				B80126401E56BFAF006BAF70 /* AppDelegate.m */,
 				B80126421E56BFAF006BAF70 /* ViewController.h */,
@@ -172,30 +169,9 @@
 			path = MYCoreText_ExampleUITests;
 			sourceTree = "<group>";
 		};
-		B801267C1E56BFF5006BAF70 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				B801267D1E56BFF5006BAF70 /* DetailViewController.h */,
-				B801267E1E56BFF5006BAF70 /* DetailViewController.m */,
-				B801267F1E56BFF5006BAF70 /* ImageViewController.h */,
-				B80126801E56BFF5006BAF70 /* ImageViewController.m */,
-				B80126811E56BFF5006BAF70 /* KeywordViewController.h */,
-				B80126821E56BFF5006BAF70 /* KeywordViewController.m */,
-				B80126831E56BFF5006BAF70 /* LinksViewController.h */,
-				B80126841E56BFF5006BAF70 /* LinksViewController.m */,
-				B80126851E56BFF5006BAF70 /* showCell.h */,
-				B80126861E56BFF5006BAF70 /* showCell.m */,
-				B80126871E56BFF5006BAF70 /* tableViewModel.h */,
-				B80126881E56BFF5006BAF70 /* tableViewModel.m */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
 		B801268F1E56C016006BAF70 /* MYCoreTextLabel */ = {
 			isa = PBXGroup;
 			children = (
-				B80126901E56C016006BAF70 /* MYAttributeModel.h */,
-				B80126911E56C016006BAF70 /* MYAttributeModel.m */,
 				B80126921E56C016006BAF70 /* MYCoreTextLabel.h */,
 				B80126931E56C016006BAF70 /* MYCoreTextLabel.m */,
 				B80126941E56C016006BAF70 /* MYCoretextResultTool.h */,
@@ -204,6 +180,25 @@
 				B80126971E56C016006BAF70 /* MYSubCoretextResult.m */,
 			);
 			path = MYCoreTextLabel;
+			sourceTree = "<group>";
+		};
+		B8894BD91E816D3100CC06DA /* Controllers(各个场景使用说明) */ = {
+			isa = PBXGroup;
+			children = (
+				B8894BDA1E816D3100CC06DA /* DetailViewController.h */,
+				B8894BDB1E816D3100CC06DA /* DetailViewController.m */,
+				B8894BDC1E816D3100CC06DA /* ImageViewController.h */,
+				B8894BDD1E816D3100CC06DA /* ImageViewController.m */,
+				B8894BDE1E816D3100CC06DA /* KeywordViewController.h */,
+				B8894BDF1E816D3100CC06DA /* KeywordViewController.m */,
+				B8894BE01E816D3100CC06DA /* LinksViewController.h */,
+				B8894BE11E816D3100CC06DA /* LinksViewController.m */,
+				B8894BE21E816D3100CC06DA /* showCell.h */,
+				B8894BE31E816D3100CC06DA /* showCell.m */,
+				B8894BE41E816D3100CC06DA /* tableViewModel.h */,
+				B8894BE51E816D3100CC06DA /* tableViewModel.m */,
+			);
+			path = "Controllers(各个场景使用说明)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -339,19 +334,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B80126981E56C016006BAF70 /* MYAttributeModel.m in Sources */,
-				B801268A1E56BFF5006BAF70 /* ImageViewController.m in Sources */,
+				B8894BE81E816D3100CC06DA /* KeywordViewController.m in Sources */,
+				B8894BEA1E816D3100CC06DA /* showCell.m in Sources */,
 				B80126991E56C016006BAF70 /* MYCoreTextLabel.m in Sources */,
 				B80126441E56BFAF006BAF70 /* ViewController.m in Sources */,
+				B8894BE61E816D3100CC06DA /* DetailViewController.m in Sources */,
 				B80126411E56BFAF006BAF70 /* AppDelegate.m in Sources */,
 				B801269B1E56C016006BAF70 /* MYSubCoretextResult.m in Sources */,
+				B8894BE71E816D3100CC06DA /* ImageViewController.m in Sources */,
 				B801263E1E56BFAF006BAF70 /* main.m in Sources */,
+				B8894BE91E816D3100CC06DA /* LinksViewController.m in Sources */,
 				B801269A1E56C016006BAF70 /* MYCoretextResultTool.m in Sources */,
-				B801268C1E56BFF5006BAF70 /* LinksViewController.m in Sources */,
-				B801268B1E56BFF5006BAF70 /* KeywordViewController.m in Sources */,
-				B801268D1E56BFF5006BAF70 /* showCell.m in Sources */,
-				B801268E1E56BFF5006BAF70 /* tableViewModel.m in Sources */,
-				B80126891E56BFF5006BAF70 /* DetailViewController.m in Sources */,
+				B8894BEB1E816D3100CC06DA /* tableViewModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,6 +577,7 @@
 				B80126681E56BFAF006BAF70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B80126691E56BFAF006BAF70 /* Build configuration list for PBXNativeTarget "MYCoreText_ExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -591,6 +586,7 @@
 				B801266B1E56BFAF006BAF70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B801266C1E56BFAF006BAF70 /* Build configuration list for PBXNativeTarget "MYCoreText_ExampleUITests" */ = {
 			isa = XCConfigurationList;
@@ -599,6 +595,7 @@
 				B801266E1E56BFAF006BAF70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

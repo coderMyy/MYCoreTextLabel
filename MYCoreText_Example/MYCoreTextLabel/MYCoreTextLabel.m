@@ -6,25 +6,26 @@
 //  Copyright © 2017年 孟遥. All rights reserved.
 //
 
-#define linkCoverTag    998
+#define keywordTag  @"keywordTag"
 #define keyWordCoverTag 1998
-#define normalLinkTag @"normalLinkTag"
-#import "MYCoreTextLabel.h"
-#import "MYCoretextResultTool.h"
+#define canClickLinkTag @"canClickLinkTag"
+#define linkCoverTag    998
 
+#import "MYCoreTextLabel.h"
 
 @interface MYCoreTextLabel ()
 
 @property (nonatomic, strong) UITextView *contentTextView;    //文本view
-@property (nonatomic, strong) NSMutableArray<MYLinkModel *> *links;   //所有的链接模型
+@property (nonatomic, strong) NSMutableArray<MYLinkModel *> *links;   //所有的可点击链接模型
 @property (nonatomic, strong) NSMutableArray<MYSubCoretextResult *> *allResults;//所有结果
 @property (nonatomic, copy) eventCallback touchCallback;      //点击链接回调
 @property (nonatomic, copy) NSString *text; //文本
-@property (nonatomic, strong) NSArray *customLinks; //其他链接
+@property (nonatomic, strong) NSArray *customLinks; //自定义链接
+@property (nonatomic, strong) NSArray *keywords;    // 关键字
 @property (nonatomic, strong) MYLinkModel *currentTouchLink; //记录当前手指所在链接模型
-@property (nonatomic, strong) NSMutableArray *norLinksCache; //常规链接模型临时存储
-@property (nonatomic, strong) NSMutableArray *keywordsCovers;
+@property (nonatomic, strong) NSMutableArray<MYLinkModel *> *norLinksCache; //常规链接模型临时存储 (缓存的目的在于,点击时查询相应模型)
 @property (nonatomic, assign,getter=isKeywordConfiged) BOOL keywordConfig; //临时记录
+
 @end
 
 @implementation MYCoreTextLabel
@@ -40,12 +41,12 @@
 - (UITextView *)contentTextView
 {
     if (!_contentTextView) {
-        _contentTextView = [[UITextView alloc]init];
-        _contentTextView.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        _contentTextView.editable = NO;
+        _contentTextView                        = [[UITextView alloc]init];
+        _contentTextView.textContainerInset     = UIEdgeInsetsMake(0, 0, 0, 0);
+        _contentTextView.editable               = NO;
         _contentTextView.userInteractionEnabled = NO;
-        _contentTextView.scrollEnabled = NO;
-        _contentTextView.backgroundColor = [UIColor clearColor];
+        _contentTextView.scrollEnabled          = NO;
+        _contentTextView.backgroundColor        = [UIColor clearColor];
     }
     return _contentTextView;
 }
@@ -58,7 +59,7 @@
         //配置自定义链接
         [MYCoretextResultTool customLinks:self.customLinks];
         //配置关键字
-        [MYCoretextResultTool keyWord:self.attribute.keyWord];
+        [MYCoretextResultTool keyWord:_keywords];
         
         _allResults = [MYCoretextResultTool subTextWithEmotion:self.text];
     }
@@ -70,19 +71,22 @@
     if (!_links) {
         _links = [NSMutableArray array];
         
-        [self.contentTextView.attributedText enumerateAttribute:normalLinkTag inRange:NSMakeRange(0, self.contentTextView.attributedText.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        //重新生成可点击链接模型,进一步处理,完善包裹区域
+        [self.contentTextView.attributedText enumerateAttribute:canClickLinkTag inRange:NSMakeRange(0, self.contentTextView.attributedText.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
            
-            NSString *linkString    = value;
-            if ([linkString isEqualToString:self.attribute.keyWord]) return ;//屏蔽关键字
+            NSString *linkString       = value;
+            if (!linkString.length) return ;//过滤空字符
+            if ([_keywords containsObject:linkString]) return ;//屏蔽关键字
             if (linkString.length) {
                 
                 MYLinkModel *link      = [[MYLinkModel alloc]init];
                 link.range             = range;
                 link.linkText          = linkString;
-                //设置链接类型
+                //设置自定义链接类型
                 if ([_customLinks containsObject:linkString]) {
                     link.linkType      = MYLinkTypeCustomLink;
                 }
+                
                 //普通链接类型
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"linkText = %@",linkString];
                 NSArray * norResults   = [self.norLinksCache filteredArrayUsingPredicate:predicate];
@@ -91,7 +95,7 @@
                     link.linkType      = cachelink.linkType;
                 }
                 //处理异常
-                if ((link.linkType == MYLinkTypetTrendLink||link.linkType == MYLinkTypetTopicLink||link.linkType == MYLinkTypetWebLink)&&self.attribute.notShowNormalLink) return;
+                if ((link.linkType == MYLinkTypetTrendLink||link.linkType == MYLinkTypetTopicLink||link.linkType == MYLinkTypetWebLink)&&_hiddenNormalLink) return;
                 
                 self.contentTextView.selectedRange = range;
                 NSArray *selectedRects = [self.contentTextView selectionRectsForRange:self.contentTextView.selectedTextRange];
@@ -132,27 +136,16 @@
 
 
 #pragma mark - 添加链接,公共接口
-- (void)text:(NSString *)text customLinks:(NSArray<NSString *> *)customLinks
+- (void)setText:(NSString *)text customLinks:(NSArray<NSString *> *)customLinks keywords:(NSArray<NSString *> *)keywords
 {
     _text        = text;
     _customLinks = customLinks;
-    if (!self.attribute) return;
+    _keywords    = keywords;
+    //属性矫正
+    [self judge];
     //复用处理
     [self reuseHandle];
     [self configAttribute:text];
-}
-
-
-#pragma mark - 设置相关属性
-- (void)setAttribute:(MYAttributeModel *)attribute
-{
-    _attribute = attribute;
-    //矫正属性
-    [self judge:attribute];
-    if (!self.text.length) return;
-    //复用处理
-    [self reuseHandle];
-    [self configAttribute:self.text];
 }
 
 
@@ -168,13 +161,13 @@
         if (result.isEmotion) {
            
             //图片富文本
-            NSTextAttachment *attachmeent = [[NSTextAttachment alloc]init];
-            UIImage *emotionImage = [UIImage imageNamed:result.string];
+            NSTextAttachment *attachmeent         = [[NSTextAttachment alloc]init];
+            UIImage *emotionImage                 = [UIImage imageNamed:result.string];
             if (emotionImage) { //有对应表情
              
-                attachmeent.image   = emotionImage;
-                attachmeent.bounds  = CGRectMake(0, -3, self.attribute.imageSize.width, self.attribute.imageSize.height);
-                NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:attachmeent];
+                attachmeent.image                 = emotionImage;
+                attachmeent.bounds  = CGRectMake(0, -3, _imageSize.width, _imageSize.height);
+                NSAttributedString *imageString   = [NSAttributedString attributedStringWithAttachment:attachmeent];
                 [stringM appendAttributedString:imageString];
             }else{
                 NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:result.string];
@@ -192,25 +185,31 @@
             if (result.links.count) {
              
                 for (MYLinkModel *link in result.links) { // 14-4 2-7 2-21
-                    //标记
-                    [string addAttribute:normalLinkTag value:[result.string substringWithRange:link.range] range:link.range];
-                    //记录常规链接
-                    [self.norLinksCache addObject:link];
+                    
                     if (link.linkType == MYLinkTypeCustomLink) {
                      
                         //自定义链接设置属性
                         [self customLinkAttribute:string range:link.range];
-                        continue;
+                        //标记自定义链接
+                        [string addAttribute:canClickLinkTag value:[result.string substringWithRange:link.range] range:link.range];
+                         continue;
                     }
+                    
                     //关键字设置属性
                     if (link.linkType == MYLinkTypeKeyword){
-                        [string addAttribute:NSForegroundColorAttributeName value:self.attribute.keyWordColor range:link.range];
+                        [string addAttribute:NSForegroundColorAttributeName value:_keyWordColor range:link.range];
+                        //标记关键字
+                        [string addAttribute:keywordTag value:[result.string substringWithRange:link.range] range:link.range];
                         continue;
                     };
                     
-                    if (self.attribute.notShowNormalLink) continue;
+                    if (_hiddenNormalLink) continue; //如果隐藏了常规链接,过滤
                     //常规链接设置属性
                     [self normalLinkAttribute:string range:link.range];
+                    //标记常规链接
+                    [string addAttribute:canClickLinkTag value:[result.string substringWithRange:link.range] range:link.range];
+                    //缓存常规链接
+                    [self.norLinksCache addObject:link];
                 }
             }
             [stringM appendAttributedString:string];
@@ -285,15 +284,15 @@
 - (void)addSelectedAnimation:(MYLinkModel *)linkModel
 {
     
-    UIColor *linkBackColor = self.attribute.norLinkBackColor;
+    UIColor *linkBackColor = _norLinkBackColor;
     if (linkModel.linkType == MYLinkTypeCustomLink) {
-        linkBackColor      = self.attribute.customLinkBackColor;
+        linkBackColor      = _customLinkBackColor;
     }
     [linkModel.rects enumerateObjectsUsingBlock:^(UITextSelectionRect * _Nonnull rect, NSUInteger idx, BOOL * _Nonnull stop) {
        
         UIView *coverView            = [[UIView alloc]init];
         coverView.backgroundColor    = linkBackColor;
-        coverView.alpha              = self.attribute.linkBackAlpha;
+        coverView.alpha              = _linkBackAlpha;
 //        CGRect frame                 = rect.rect;
 //        frame.size.height            = self.contentTextView.font.lineHeight;
         coverView.frame              = rect.rect;
@@ -321,39 +320,41 @@
 #pragma mark - 常规链接属性设置
 - (void)normalLinkAttribute:(NSMutableAttributedString *)attriteStr range:(NSRange)linkRange
 {
-    [attriteStr addAttribute:NSForegroundColorAttributeName value:self.attribute.norLinkColor range:linkRange];
-    [attriteStr addAttribute:NSFontAttributeName value:self.attribute.norLinkFont range:linkRange];
+    [attriteStr addAttribute:NSForegroundColorAttributeName value:_norLinkColor range:linkRange];
+    [attriteStr addAttribute:NSFontAttributeName value:_norLinkFont range:linkRange];
 }
 
 #pragma mark - 特殊指定字符链接属性设置
 - (void)customLinkAttribute:(NSMutableAttributedString *)attributeStr range:(NSRange)linkRange
 {
-
-    [attributeStr addAttribute:NSFontAttributeName value:self.attribute.customLinkFont range:linkRange];
-    [attributeStr addAttribute:NSForegroundColorAttributeName value:self.attribute.customLinkColor range:linkRange];
+    [attributeStr addAttribute:NSFontAttributeName value:_customLinkFont range:linkRange];
+    [attributeStr addAttribute:NSForegroundColorAttributeName value:_customLinkColor range:linkRange];
 }
 
 #pragma mark - 普通文本属性设置
 - (void)normalTextAttribute:(NSMutableAttributedString *)attributeStr
 {
-    [attributeStr addAttribute:NSFontAttributeName value:self.attribute.textFont range:NSMakeRange(0, attributeStr.length)];
-    [attributeStr addAttribute:NSForegroundColorAttributeName value:self.attribute.textColor range:NSMakeRange(0, attributeStr.length)];
+    [attributeStr addAttribute:NSFontAttributeName value:_textFont range:NSMakeRange(0, attributeStr.length)];
+    [attributeStr addAttribute:NSForegroundColorAttributeName value:_textColor range:NSMakeRange(0, attributeStr.length)];
     NSMutableParagraphStyle *paragra = [[NSMutableParagraphStyle alloc]init];
     [paragra setLineBreakMode:NSLineBreakByCharWrapping];
-    [paragra setLineSpacing:self.attribute.lineSpacing];
+    [paragra setLineSpacing:_lineSpacing];
     [attributeStr addAttribute:NSParagraphStyleAttributeName value:paragra range:NSMakeRange(0, attributeStr.length)];
-    [attributeStr addAttribute:NSKernAttributeName value:@(self.attribute.wordSpacing) range:NSMakeRange(0, attributeStr.length)];
+    [attributeStr addAttribute:NSKernAttributeName value:@(_wordSpacing) range:NSMakeRange(0, attributeStr.length)];
 }
 
 #pragma mark - 高亮关键字设置
 - (void)keyWord:(NSMutableAttributedString *)attributeStr
 {
     
-    if (!self.attribute.keyWord.length) return;
-    [attributeStr enumerateAttribute:normalLinkTag inRange:NSMakeRange(0, attributeStr.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+    if (!_keywords.count) return;
+    [attributeStr enumerateAttribute:keywordTag inRange:NSMakeRange(0, attributeStr.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
        
         NSString *str = value;
-        if (![str isEqualToString:self.attribute.keyWord]||!range.length) return ;
+        if (!str.length) return ;
+        NSPredicate *predict = [NSPredicate predicateWithFormat:@"SELF = %@",str];
+        NSArray *keywordResults = [_keywords filteredArrayUsingPredicate:predict];
+        if (![str isEqualToString:keywordResults.firstObject]||!range.length) return ; //过滤非关键字
             
             //计算选中区域
             self.contentTextView.selectedRange = range;
@@ -361,8 +362,8 @@
             for (UITextSelectionRect *rect in coverRects) {
                 if (!rect.rect.size.width||!rect.rect.size.height) continue;
                 UIView *keywordView            = [[UIView alloc]init];
-                keywordView.backgroundColor    = self.attribute.keyWordBackColor;
-                keywordView.alpha              = self.attribute.linkBackAlpha;
+                keywordView.backgroundColor    = _keyWordBackColor;
+                keywordView.alpha              = _linkBackAlpha;
                 keywordView.layer.cornerRadius = 3.f;
                 keywordView.clipsToBounds      = YES;
                 keywordView.tag                = keyWordCoverTag;
@@ -375,49 +376,49 @@
 }
 
 #pragma mark - 判断属性
-- (void)judge:(MYAttributeModel *)attributeModel
+- (void)judge
 {
     //文本内容
-    if (!attributeModel.textFont) {
-        self.attribute.textFont            = [UIFont systemFontOfSize:14.f];
+    if (!_textFont) {
+        _textFont            = [UIFont systemFontOfSize:14.f];
     }
-    if (!attributeModel.textColor) {
-        self.attribute.textColor           = [UIColor blackColor];
+    if (!_textColor) {
+        _textColor           = [UIColor blackColor];
     }
-    if (!attributeModel.imageSize.width||!attributeModel.imageSize.height) {
-        attributeModel.imageSize           = CGSizeMake(self.attribute.textFont.lineHeight, self.attribute.textFont.lineHeight);
+    if (!_imageSize.width||!_imageSize.height) {
+        _imageSize           = CGSizeMake(_textFont.lineHeight, _textFont.lineHeight);
     }
-    if (!attributeModel.linkBackAlpha) {
-        self.attribute.linkBackAlpha       = 0.5f;
+    if (!_linkBackAlpha) {
+        _linkBackAlpha       = 0.5f;
     }
 
     //常规链接
-    if (!attributeModel.norLinkFont) {
-        self.attribute.norLinkFont         = self.attribute.textFont;
+    if (!_norLinkFont) {
+        _norLinkFont         = _textFont;
     }
-    if (!attributeModel.norLinkColor) {
-        self.attribute.norLinkColor        = [UIColor blueColor];
+    if (!_norLinkColor) {
+        _norLinkColor        = [UIColor blueColor];
     }
-    if (!attributeModel.norLinkBackColor) {
-        self.attribute.norLinkBackColor    = [UIColor blueColor];
+    if (!_norLinkBackColor) {
+        _norLinkBackColor    = [UIColor blueColor];
     }
     
     //自定义链接
-    if (!attributeModel.customLinkFont) {
-        self.attribute.customLinkFont      = self.attribute.textFont;
+    if (!_customLinkFont) {
+        _customLinkFont      = _textFont;
     }
-    if (!attributeModel.customLinkColor) {
-        self.attribute.customLinkColor     = [UIColor blueColor];
+    if (!_customLinkColor) {
+        _customLinkColor     = [UIColor blueColor];
     }
-    if (!attributeModel.customLinkBackColor) {
-        self.attribute.customLinkBackColor = [UIColor blueColor];
+    if (!_customLinkBackColor) {
+        _customLinkBackColor = [UIColor blueColor];
     }
     //关键字
-    if (!attributeModel.keyWordColor) {
-        self.attribute.keyWordColor        = [UIColor blackColor];
+    if (!_keyWordColor) {
+        _keyWordColor        = [UIColor blackColor];
     }
-    if (!attributeModel.keyWordBackColor) {
-        self.attribute.keyWordBackColor    = [UIColor yellowColor];
+    if (!_keyWordBackColor) {
+        _keyWordBackColor    = [UIColor yellowColor];
     }
 }
 
@@ -435,8 +436,10 @@
 #pragma mark - 复用处理
 - (void)reuseHandle
 {
+    
     self.allResults    = nil;
     self.links         = nil;
+    self.norLinksCache = nil;
     self.keywordConfig = NO;
     for (UIView *view in self.subviews) {
         

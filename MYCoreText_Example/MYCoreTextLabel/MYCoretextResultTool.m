@@ -21,9 +21,9 @@ static const NSArray *customlinksKey;
     objc_setAssociatedObject(self ,&customlinksKey ,customLinks ,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-+ (void)keyWord:(NSString *)keyword
++ (void)keyWord:(NSArray<NSString *> *)keywords
 {
-    objc_setAssociatedObject(self ,&keyWordKey ,keyword ,OBJC_ASSOCIATION_COPY);
+    objc_setAssociatedObject(self ,&keyWordKey ,keywords ,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 //以表情切割结果集
@@ -218,8 +218,8 @@ static const NSArray *customlinksKey;
         
         if (result.range.length) {
             MYSubCoretextResult *resultModel = [[MYSubCoretextResult alloc]init];
-            resultModel.isEmotion = YES;
-            resultModel.range  = result.range;
+            resultModel.isEmotion            = YES;
+            resultModel.range                = result.range;
             [emotionResults addObject:resultModel];
         }
     }];
@@ -293,20 +293,24 @@ static const NSArray *customlinksKey;
 {
     NSMutableArray *keywords = [NSMutableArray array];
     //正则匹配关键字keyword
-    NSString *keywordRegex = objc_getAssociatedObject(self, &keyWordKey);
-    if (!keywordRegex.length) return nil ;
+    NSArray *keywordRegexs = objc_getAssociatedObject(self, &keyWordKey);
+    if (!keywordRegexs.count) return nil ;
     
-    NSRegularExpression *keywordExpression = [NSRegularExpression regularExpressionWithPattern:keywordRegex options:NSRegularExpressionCaseInsensitive error:nil];
-    [keywordExpression enumerateMatchesInString:rangeString options:NSMatchingReportCompletion range:NSMakeRange(0, rangeString.length) usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+    for (NSString * keyword in keywordRegexs) {
         
-        if (result.range.length) {
-            MYLinkModel *link = [[MYLinkModel alloc]init];
-            link.range        = result.range;
-            link.linkText     = [rangeString substringWithRange:result.range];
-            link.linkType     = MYLinkTypeKeyword;
-            [keywords addObject:link];
-        }
-    }];
+        NSRegularExpression *keywordExpression = [NSRegularExpression regularExpressionWithPattern:keyword options:NSRegularExpressionCaseInsensitive error:nil];
+        [keywordExpression enumerateMatchesInString:rangeString options:NSMatchingReportCompletion range:NSMakeRange(0, rangeString.length) usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+            
+            if (result.range.length) {
+                MYLinkModel *link = [[MYLinkModel alloc]init];
+                link.range        = result.range;
+                link.linkText     = [rangeString substringWithRange:result.range];
+                link.linkType     = MYLinkTypeKeyword;
+                [keywords addObject:link];
+            }
+        }];
+    }
+    
     return keywords;
 }
 
