@@ -36,16 +36,6 @@ typedef void(^eventCallback)(NSString *linkString);
 @property (nonatomic, weak) id<MYCoreTextLabelDelegate> delegate;
 
 /**
- 内容添加链接 , 如不需要额外的指定链接 , customLinks传nil ,默认显示常规链接 @ #话题#  web 
- 你可以通过attribute的shouldShowNormLink属性设置是否显示最常规的链接
-
- @param text       <#text description#>
- @param customLinks <#otherlinks description#>
- */
-- (void)setText:(NSString *)text customLinks:(NSArray<NSString *> *)customLinks keywords:(NSArray<NSString *> *)keywords;
-
-
-/**
  表情/图片尺寸大小 ,默认和字体一致
  */
 @property (nonatomic, assign) CGSize imageSize;
@@ -59,7 +49,7 @@ typedef void(^eventCallback)(NSString *linkString);
  */
 @property (nonatomic, assign) CGFloat linkBackAlpha;
 
-#pragma mark - 普通文本部分属性
+#pragma mark ---------------*******************************---------------- 普通文本部分属性
 /**
  内容字体大小（除开链接特殊字以外内容的字体大小）,默认14.f
  */
@@ -80,7 +70,7 @@ typedef void(^eventCallback)(NSString *linkString);
  */
 @property (nonatomic, assign) CGFloat wordSpacing;
 
-#pragma mark - 常规链接部分属性
+#pragma mark ---------------*******************************---------------- 常规链接部分属性
 /**
  常规链接字体颜色   http  @xx   #话题#  默认蓝色
  */
@@ -95,7 +85,7 @@ typedef void(^eventCallback)(NSString *linkString);
  */
 @property (nonatomic, strong) UIColor *norLinkBackColor;
 
-#pragma mark - 自定义链接部分属性
+#pragma mark ---------------*******************************---------------- 自定义链接部分属性
 /**
  额外指定链接文字颜色 默认蓝色
  */
@@ -111,7 +101,7 @@ typedef void(^eventCallback)(NSString *linkString);
  */
 @property (nonatomic, strong) UIColor *customLinkBackColor;
 
-#pragma mark - 关键字部分属性
+#pragma mark ---------------*******************************---------------- 关键字部分属性
 
 /**
  关键字颜色,默认黑色
@@ -122,5 +112,14 @@ typedef void(^eventCallback)(NSString *linkString);
  关键字背景色 , 默认黄色
  */
 @property (nonatomic, strong) UIColor *keyWordBackColor;
+
+/**
+ 内容添加链接 , 如不需要额外的指定链接 , customLinks传nil ,默认显示常规链接 @ #话题#  web
+ 你可以通过attribute的shouldShowNormLink属性设置是否显示最常规的链接
+ 
+ @param text       <#text description#>
+ @param customLinks <#otherlinks description#>
+ */
+- (void)setText:(NSString *)text customLinks:(NSArray<NSString *> *)customLinks keywords:(NSArray<NSString *> *)keywords;
 
 @end
