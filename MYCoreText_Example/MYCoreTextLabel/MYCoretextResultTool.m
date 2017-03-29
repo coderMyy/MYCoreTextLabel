@@ -65,7 +65,7 @@ static const NSArray *customlinksKey;
                 [detailResults addObject:lastNorResult];
                 }
             }
-            *stop = YES;
+            return ;
         }
         
         //第一个
