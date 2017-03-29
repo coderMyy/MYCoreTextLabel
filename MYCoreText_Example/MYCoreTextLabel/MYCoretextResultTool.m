@@ -45,23 +45,23 @@ static const NSArray *customlinksKey;
     NSMutableArray<MYSubCoretextResult *> *detailResults    = [NSMutableArray array];
     [detailResults addObjectsFromArray:emotionResults];
     NSString *text = objc_getAssociatedObject(self,&textKey);
-    
+    __weak typeof(self) weakself = self;
     [emotionResults enumerateObjectsUsingBlock:^(MYSubCoretextResult  *_Nonnull result, NSUInteger idx, BOOL * _Nonnull stop) {
         
         //如果只有一个表情情况
         if (emotionResults.count == 1) {
             
-            [self emotionResultDeal:result.range string:text resultModel:result];
+            [weakself emotionResultDeal:result.range string:text resultModel:result];
             NSArray *normals = [text componentsSeparatedByString:result.string];
             //赋值表情附件
             if (normals.count) {
                 if ([normals.firstObject length]) {
-                    MYSubCoretextResult *firstNorResult = [self normalTextResult:[text rangeOfString:normals.firstObject] string:text];
+                    MYSubCoretextResult *firstNorResult = [weakself normalTextResult:[text rangeOfString:normals.firstObject] string:text];
                     [detailResults insertObject:firstNorResult atIndex:0];
                 }
                 if ([normals.lastObject length]) {
                 
-                MYSubCoretextResult *lastNorResult  = [self normalTextResult:[text rangeOfString:normals.lastObject] string:text];
+                MYSubCoretextResult *lastNorResult  = [weakself normalTextResult:[text rangeOfString:normals.lastObject] string:text];
                 [detailResults addObject:lastNorResult];
                 }
             }
@@ -72,26 +72,26 @@ static const NSArray *customlinksKey;
         if (idx == 0) {
             
             //赋值表情附件
-            [self emotionResultDeal:result.range string:text resultModel:emotionResults[idx]];
+            [weakself emotionResultDeal:result.range string:text resultModel:emotionResults[idx]];
             
             //插入最前面文本
-            MYSubCoretextResult *firstNorTextResult = [self firstNorTextResult:result];
+            MYSubCoretextResult *firstNorTextResult = [weakself firstNorTextResult:result];
             if (firstNorTextResult) {
              [detailResults insertObject:firstNorTextResult atIndex:0];
             }
         }else {
             
             //赋值表情附件
-            [self emotionResultDeal:result.range string:text resultModel:emotionResults[idx]];
+            [weakself emotionResultDeal:result.range string:text resultModel:emotionResults[idx]];
             //插入中间普通文本
-            MYSubCoretextResult *midNorResult = [self midNorTextResult:emotionResults index:idx];
+            MYSubCoretextResult *midNorResult = [weakself midNorTextResult:emotionResults index:idx];
             if (midNorResult) {
              [detailResults insertObject:midNorResult atIndex:[detailResults indexOfObject:result]];
             }
             
             //最后一个链接处理
             if (idx == emotionResults.count -1) {
-                MYSubCoretextResult *lastNorTextResult = [self lastNorTextResult:result];
+                MYSubCoretextResult *lastNorTextResult = [weakself lastNorTextResult:result];
                 if (lastNorTextResult) {
                  [detailResults addObject:lastNorTextResult];
                 }

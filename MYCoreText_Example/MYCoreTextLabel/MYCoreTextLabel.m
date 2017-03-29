@@ -72,6 +72,7 @@
         _links = [NSMutableArray array];
         
         //重新生成可点击链接模型,进一步处理,完善包裹区域
+        __weak typeof(self) weakself = self;
         [self.contentTextView.attributedText enumerateAttribute:canClickLinkTag inRange:NSMakeRange(0, self.contentTextView.attributedText.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
            
             NSString *linkString       = value;
@@ -89,7 +90,7 @@
                 
                 //普通链接类型
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"linkText = %@",linkString];
-                NSArray * norResults   = [self.norLinksCache filteredArrayUsingPredicate:predicate];
+                NSArray * norResults   = [weakself.norLinksCache filteredArrayUsingPredicate:predicate];
                 MYLinkModel *cachelink = norResults.firstObject;
                 if (cachelink) {
                     link.linkType      = cachelink.linkType;
@@ -97,8 +98,8 @@
                 //处理异常
                 if ((link.linkType == MYLinkTypetTrendLink||link.linkType == MYLinkTypetTopicLink||link.linkType == MYLinkTypetWebLink)&&_hiddenNormalLink) return;
                 
-                self.contentTextView.selectedRange = range;
-                NSArray *selectedRects = [self.contentTextView selectionRectsForRange:self.contentTextView.selectedTextRange];
+                weakself.contentTextView.selectedRange = range;
+                NSArray *selectedRects = [weakself.contentTextView selectionRectsForRange:weakself.contentTextView.selectedTextRange];
                 NSMutableArray *rects  = [NSMutableArray array];
                 for (UITextSelectionRect *rect  in selectedRects) {
                     
@@ -152,7 +153,7 @@
 #pragma mark - 配置属性
 - (void)configAttribute:(NSString *)text
 {
-    
+    __weak typeof(self) weakSelf = self;
      NSMutableAttributedString *stringM = [[NSMutableAttributedString alloc]init];
     //遍历结果集
     [self.allResults enumerateObjectsUsingBlock:^(MYSubCoretextResult * _Nonnull result, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -171,7 +172,7 @@
                 [stringM appendAttributedString:imageString];
             }else{
                 NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:result.string];
-                [self normalTextAttribute:string];
+                [weakSelf normalTextAttribute:string];
                 [stringM appendAttributedString:string];
             }
             
@@ -180,7 +181,7 @@
             //设置文本属性
             NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:result.string];
             //普通文本属性
-            [self normalTextAttribute:string];
+            [weakSelf normalTextAttribute:string];
             //设置链接属性
             if (result.links.count) {
              
@@ -189,7 +190,7 @@
                     if (link.linkType == MYLinkTypeCustomLink) {
                      
                         //自定义链接设置属性
-                        [self customLinkAttribute:string range:link.range];
+                        [weakSelf customLinkAttribute:string range:link.range];
                         //标记自定义链接
                         [string addAttribute:canClickLinkTag value:[result.string substringWithRange:link.range] range:link.range];
                          continue;
@@ -205,11 +206,11 @@
                     
                     if (_hiddenNormalLink) continue; //如果隐藏了常规链接,过滤
                     //常规链接设置属性
-                    [self normalLinkAttribute:string range:link.range];
+                    [weakSelf normalLinkAttribute:string range:link.range];
                     //标记常规链接
                     [string addAttribute:canClickLinkTag value:[result.string substringWithRange:link.range] range:link.range];
                     //缓存常规链接
-                    [self.norLinksCache addObject:link];
+                    [weakSelf.norLinksCache addObject:link];
                 }
             }
             [stringM appendAttributedString:string];
@@ -348,6 +349,7 @@
 {
     
     if (!_keywords.count) return;
+    __weak typeof(self) weakself = self;
     [attributeStr enumerateAttribute:keywordTag inRange:NSMakeRange(0, attributeStr.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
        
         NSString *str = value;
@@ -357,8 +359,8 @@
         if (![str isEqualToString:keywordResults.firstObject]||!range.length) return ; //过滤非关键字
             
             //计算选中区域
-            self.contentTextView.selectedRange = range;
-            NSArray *coverRects = [self.contentTextView selectionRectsForRange:self.contentTextView.selectedTextRange];
+            weakself.contentTextView.selectedRange = range;
+            NSArray *coverRects = [weakself.contentTextView selectionRectsForRange:weakself.contentTextView.selectedTextRange];
             for (UITextSelectionRect *rect in coverRects) {
                 if (!rect.rect.size.width||!rect.rect.size.height) continue;
                 UIView *keywordView            = [[UIView alloc]init];
@@ -370,7 +372,7 @@
 //                CGRect   frame                 = rect.rect;
 //                frame.size.height              = self.contentTextView.font.lineHeight + 2.f;
                 keywordView.frame              = rect.rect;
-                [self insertSubview:keywordView atIndex:0];
+                [weakself insertSubview:keywordView atIndex:0];
             }
      }];
 }
@@ -436,7 +438,6 @@
 #pragma mark - 复用处理
 - (void)reuseHandle
 {
-    
     self.allResults    = nil;
     self.links         = nil;
     self.norLinksCache = nil;
