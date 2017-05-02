@@ -42,7 +42,7 @@
 {
     if (!_contentTextView) {
         _contentTextView                        = [[UITextView alloc]init];
-        _contentTextView.textContainerInset     = UIEdgeInsetsMake(0, 0, 0, 0);
+        _contentTextView.textContainerInset     = UIEdgeInsetsMake(1, 1, 1, 1);
         _contentTextView.editable               = NO;
         _contentTextView.userInteractionEnabled = NO;
         _contentTextView.scrollEnabled          = NO;
