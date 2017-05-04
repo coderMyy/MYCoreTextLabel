@@ -380,48 +380,32 @@
 #pragma mark - 判断属性
 - (void)judge
 {
-    //文本内容
-    if (!_textFont) {
-        _textFont            = [UIFont systemFontOfSize:14.f];
-    }
-    if (!_textColor) {
-        _textColor           = [UIColor blackColor];
-    }
-    if (!_imageSize.width||!_imageSize.height) {
-        _imageSize           = CGSizeMake(_textFont.lineHeight, _textFont.lineHeight);
-    }
-    if (!_linkBackAlpha) {
-        _linkBackAlpha       = 0.5f;
-    }
-
-    //常规链接
-    if (!_norLinkFont) {
-        _norLinkFont         = _textFont;
-    }
-    if (!_norLinkColor) {
-        _norLinkColor        = [UIColor blueColor];
-    }
-    if (!_norLinkBackColor) {
-        _norLinkBackColor    = [UIColor blueColor];
+    
+    if (!_text.length) {
+        _text = @" ";
+        return;
     }
     
+    //文本内容
+    if (!_textFont)  _textFont                   = [UIFont systemFontOfSize:14.f];
+    if (!_textColor) _textColor                  = [UIColor blackColor];
+    if (!_imageSize.width||
+        !_imageSize.height) _imageSize           = CGSizeMake(_textFont.lineHeight, _textFont.lineHeight);
+    if (!_linkBackAlpha) _linkBackAlpha          = 0.5f;
+
+    //常规链接
+    if (!_norLinkFont) _norLinkFont              = _textFont;
+    if (!_norLinkColor) _norLinkColor            = [UIColor blueColor];
+    if (!_norLinkBackColor) _norLinkBackColor    = [UIColor blueColor];
+    
     //自定义链接
-    if (!_customLinkFont) {
-        _customLinkFont      = _textFont;
-    }
-    if (!_customLinkColor) {
-        _customLinkColor     = [UIColor blueColor];
-    }
-    if (!_customLinkBackColor) {
-        _customLinkBackColor = [UIColor blueColor];
-    }
+    if (!_customLinkFont) _customLinkFont        = _textFont;
+    if (!_customLinkColor) _customLinkColor      = [UIColor blueColor];
+    if (!_customLinkBackColor) _customLinkBackColor = [UIColor blueColor];
+    
     //关键字
-    if (!_keyWordColor) {
-        _keyWordColor        = [UIColor blackColor];
-    }
-    if (!_keyWordBackColor) {
-        _keyWordBackColor    = [UIColor yellowColor];
-    }
+    if (!_keyWordColor) _keyWordColor            = [UIColor blackColor];
+    if (!_keyWordBackColor) _keyWordBackColor    = [UIColor yellowColor];
 }
 
 #pragma mark - 计算尺寸
