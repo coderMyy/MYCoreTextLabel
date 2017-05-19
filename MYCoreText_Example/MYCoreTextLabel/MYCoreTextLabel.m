@@ -430,6 +430,8 @@
     if (!self.contentTextView.attributedText.length) {
         return CGSizeZero;
     }
+    
+    //此处存在隐患 , 如发生状况 , 可通过 加上内间距解决
     CGSize viewSize = [self.contentTextView sizeThatFits:CGSizeMake(size.width, size.height)];
     return viewSize;
 }
