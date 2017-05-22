@@ -436,4 +436,9 @@
     }
 }
 
+#pragma mark 类方法
++ (instancetype)coreTextLabel
+{
+    return [[self alloc]init];
+}
 @end

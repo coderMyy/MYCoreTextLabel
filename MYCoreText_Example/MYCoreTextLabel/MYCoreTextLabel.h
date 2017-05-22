@@ -32,11 +32,6 @@ typedef void(^eventCallback)(NSString *linkString);
 @interface MYCoreTextLabel : UIView
 
 /**
- 链接属性 ，如不设置 ， 默认14号字体 ， 默认链接字颜色为蓝色 ， 内容字颜色为黑色
- */
-//@property (nonatomic, strong) MYAttributeModel *attribute;
-
-/**
  代理
  */
 @property (nonatomic, weak) id<MYCoreTextLabelDelegate> delegate;
@@ -119,6 +114,7 @@ typedef void(^eventCallback)(NSString *linkString);
  */
 @property (nonatomic, strong) UIColor *keyWordBackColor;
 
++ (instancetype)coreTextLabel;
 /**
  内容添加链接 , 如不需要额外的指定链接 , customLinks传nil ,默认显示常规链接 @ #话题#  web
  你可以通过attribute的shouldShowNormLink属性设置是否显示最常规的链接
