@@ -15,11 +15,11 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger,MYLinkType){
-    MYLinkTypetTrendLink = 1<<0,
-    MYLinkTypetTopicLink = 2<<0,
-    MYLinkTypetWebLink   = 3<<0,
-    MYLinkTypeCustomLink = 4<<0,
-    MYLinkTypeKeyword    = 5<<0
+    MYLinkTypetTrendLink = 1<<0,   // @链接
+    MYLinkTypetTopicLink = 2<<0,  // 话题 ## 链接
+    MYLinkTypetWebLink   = 3<<0,  // 网址链接 www. xxx .com
+    MYLinkTypeCustomLink = 4<<0, //自定义链接类型
+    MYLinkTypeKeyword    = 5<<0  // 关键字类型
 };
 
 @interface MYSubCoretextResult : NSObject

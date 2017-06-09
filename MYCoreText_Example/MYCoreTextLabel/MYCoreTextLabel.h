@@ -25,6 +25,7 @@ typedef void(^eventCallback)(NSString *linkString);
 
 @optional
 
+//代理回调
 - (void)linkText:(NSString *)clickString type:(MYLinkType)linkType;
 
 @end
@@ -115,9 +116,34 @@ typedef void(^eventCallback)(NSString *linkString);
 @property (nonatomic, strong) UIColor *keyWordBackColor;
 
 + (instancetype)coreTextLabel;
+
+- (void)setText:(NSString *)text;
+
+/**
+  设置内容 , linkRanges可以指定 对应range位置的字符串为连接类型 , 代理回调链接类型为MYLinkTypeCustomLink自定义字符串链接类型
+ 
+ 使用说明 :  例如需要展示的文本为  @"这是一句测试数据一句一句" , 此时我仅需要把第一个 "一句"变为链接可点击状态 , 那么只需要设置 text 为该句子 , linkeRanges 传入 @[[NSValue valueWithRange:NSMakeRange(2, 2)]] 即可
+
+ 应用场景 : 此方法 , 多用于类似微信朋友圈的 xxx 回复 xxx , 朋友圈表情文字,图片文字 ,网址话题等混排
+ 
+ @param text <#text description#>
+ @param ranges <#range description#>
+ @param keywords <#keywords description#>
+ */
+- (void)setText:(NSString *)text linkRanges:(NSArray<NSValue *> *) ranges keywords:(NSArray<NSString *> *)keywords;
+
+
 /**
  内容添加链接 , 如不需要额外的指定链接 , customLinks传nil ,默认显示常规链接 @ #话题#  web
  你可以通过attribute的shouldShowNormLink属性设置是否显示最常规的链接
+ 
+ 使用说明 : 例如我需要展示一句话 , @"这是一个#话题#,你@小明一定要去关注喔 , 网址是www.baidu.com . 如果有惊喜或者福利 , 一定要提醒我" 
+ 
+ 此时如果 , 我需要让#话题#可以点击 , @小明 可以点击 ,www.baidu.com 可以点击 , "福利" 展示为关键字状态,就是背景有颜色,但是不可点击 , "提醒" 可以点击 , 仅需如下操作
+ 此时text传入该字符串 , hiddenNormalLink 默认为NO , #话题# , @ , 网址会自动匹配成链接 ,无需设置 ,如不需要显示 , 设置为NO即可 . customLinks传入 @[@"提醒"] , keywords
+ 传入 @[@"福利"] 即可
+ 
+ 应用场景 : 搜索时展示搜索关键词 , 发送验证(您已阅读相关条例,发送短信验证) , 朋友圈表情文字,图片文字 ,网址话题等混排
  
  @param text       <#text description#>
  @param customLinks <#otherlinks description#>

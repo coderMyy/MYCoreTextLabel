@@ -136,12 +136,31 @@
 
 
 
-#pragma mark - 添加链接,公共接口
+#pragma mark - 添加指定字符串链接,关键字,公共接口
 - (void)setText:(NSString *)text customLinks:(NSArray<NSString *> *)customLinks keywords:(NSArray<NSString *> *)keywords
 {
     _text        = text;
     _customLinks = customLinks;
     _keywords    = keywords;
+    //属性矫正
+    [self judge];
+    //复用处理
+    [self reuseHandle];
+    [self configAttribute:text];
+}
+
+#pragma mark - 添加指定区间链接 , 公共接口
+- (void)setText:(NSString *)text linkRanges:(NSArray<NSValue *> *) ranges keywords:(NSArray<NSString *> *)keywords
+{
+    _text   = text;
+    _keywords = keywords;
+    NSMutableArray *customLinks = [NSMutableArray array];
+    for (NSValue *rangeValue in ranges) {
+        NSRange range = rangeValue.rangeValue;
+        if (range.location + range.length >text.length) continue;
+        [customLinks addObject:[text substringWithRange:range]];
+    }
+    _customLinks = customLinks;
     //属性矫正
     [self judge];
     //复用处理
@@ -415,7 +434,6 @@
         return CGSizeZero;
     }
     
-    //此处存在隐患 , 如发生状况 , 可通过 加上内间距解决
     CGSize viewSize = [self.contentTextView sizeThatFits:CGSizeMake(size.width, size.height)];
     return viewSize;
 }
