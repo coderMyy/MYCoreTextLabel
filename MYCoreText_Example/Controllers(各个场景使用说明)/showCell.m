@@ -23,19 +23,60 @@
 {
     if (!_coretextLabel) {
         _coretextLabel = [[MYCoreTextLabel alloc]init];
+        
+        //设置普通文本的属性
         _coretextLabel.textFont = [UIFont systemFontOfSize:15.f];   //设置普通内容文字大小
         _coretextLabel.textColor = [UIColor brownColor];   // 设置普通内容文字颜色
-        _coretextLabel.norLinkFont = [UIFont systemFontOfSize:18.f];  //设置常规链接字体大小  @ #话题# www.baidu.com 网址类型
-        _coretextLabel.norLinkColor = [UIColor blueColor];  //设置常规链接字体颜色
-        _coretextLabel.norLinkBackColor = [UIColor redColor];  //设置常规链接点击背景色
+        _coretextLabel.lineSpacing = 5;   //设置行间距
+        _coretextLabel.wordSpacing = 0.5; //设置字间距
+        
+        
+        //设置网址链接的属性
+        _coretextLabel.showWebLink  = YES;
+        _coretextLabel.webLinkFont = [UIFont systemFontOfSize:18.f];  //设置网址链接字体大小
+        _coretextLabel.webLinkColor = [UIColor blueColor];  //设置网址链接字体颜色
+        _coretextLabel.webLinkBackColor = [UIColor redColor];  //设置网址链接点击背景色
+        
+        
+        
+        //设置 #话题#的属性
+        _coretextLabel.showTopicLink = YES;
+        _coretextLabel.topicLinkFont = [UIFont systemFontOfSize:15.f];
+        _coretextLabel.topicLinkColor = [UIColor redColor];
+        _coretextLabel.topicLinkBackColor = [UIColor blackColor];
+        
+        
+        //设置 @ 的属性
+        _coretextLabel.showTrendLink = YES;
+        _coretextLabel.trendLinkFont = [UIFont systemFontOfSize:18];
+        _coretextLabel.trendLinkColor = [UIColor purpleColor];
+        _coretextLabel.trendLinkBackColor = [UIColor darkGrayColor];
+        
+        
+        //设置邮箱的属性
+        _coretextLabel.showMailLink = YES;
+        _coretextLabel.mailLinkFont = [UIFont systemFontOfSize:18.f];
+        _coretextLabel.mailLinkColor = [UIColor redColor];
+        _coretextLabel.mailLinkBackColor = [UIColor greenColor];
+        
+        //设置手机号的属性
+        _coretextLabel.showPhoneLink = YES;
+        _coretextLabel.phoneLinkFont = [UIFont systemFontOfSize:15.f];
+        _coretextLabel.phoneLinkColor = [UIColor redColor];
+        _coretextLabel.phoneLinkBackColor = [UIColor blueColor];
+        
+        //设置自定义链接的属性
         _coretextLabel.customLinkFont = [UIFont systemFontOfSize:18.f];  //设置自定义链接字 字体大小
         _coretextLabel.customLinkColor = [UIColor greenColor];  //设置自定义链接字体颜色
         _coretextLabel.customLinkBackColor = [UIColor orangeColor];  //设置自定义链接点击背景色
-        _coretextLabel.keyWordColor = [UIColor redColor];  //设置关键字颜色
-        _coretextLabel.keyWordBackColor = [UIColor blueColor];  //设置关键字高亮背景色
-        _coretextLabel.hiddenNormalLink = NO;  // 不显示常规链接 , 默认为NO  即默认显示常规链接 , 如果不需要显示 , 赋值为YES即可
-        _coretextLabel.lineSpacing = 5;   //设置行间距
-        _coretextLabel.wordSpacing = 0.5; //设置字间距
+        
+        
+        //设置关键字的属性
+        _coretextLabel.keywordFont = [UIFont systemFontOfSize:15];
+        _coretextLabel.keyWordColor = [UIColor blueColor];  //设置关键字颜色
+        _coretextLabel.keyWordBackColor = [UIColor yellowColor];  //设置关键字高亮背景色
+        
+        
         _coretextLabel.delegate = self;   //设置代理 , 用于监听点击事件 以及接收点击内容等
     }
     return _coretextLabel;
@@ -57,7 +98,7 @@
     _model = model;
     
     //赋值
-    [self.coretextLabel setText:model.text customLinks:@[@"朋友圈",@"即时通讯"] keywords:@[@"如果喜欢请点一下star噢"]];
+    [self.coretextLabel setText:model.text customLinks:@[@"一个自定义链接",@"另外一个自定义链接"] keywords:@[@"关键字",@"star",@"fork"]];
     //计算高度
     CGSize size = [self.coretextLabel sizeThatFits:CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     
@@ -68,7 +109,7 @@
 
 - (void)linkText:(NSString *)clickString type:(MYLinkType)linkType
 {
-    NSLog(@"------------%@--------------%li",clickString,linkType);
+    NSLog(@"------------点击内容是 : %@--------------链接类型是 : %li",clickString,linkType);
 }
 
 
