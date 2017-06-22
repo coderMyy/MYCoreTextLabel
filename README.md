@@ -60,10 +60,6 @@
 
 
     //匹配 @ 链接
-
-    _coretextLabel = [[MYCoreTextLabel alloc]init];
-    _coretextLabel.delegate = self;
-
     _coretextLabel.showTrendLink = YES;
     //如果不设置任何相关信息 , 默认和普通文本大小一致  , 颜色默认蓝色
 
@@ -105,7 +101,6 @@
     _coretextLabel.lineSpacing = 2;    //设置行间距
     _coretextLabel.wordSpacing = 1.5;  //设置字间距
 
-
     //设置关键字属性
     _coretextLabel.keywordFont = [UIFont systemFontOfSize:20];
     _coretextLabel.keyWordColor = [UIColor redColor]; //设置关键字颜色
@@ -139,14 +134,11 @@
     _coretextLabel.lineSpacing = 5;   //设置行间距
     _coretextLabel.wordSpacing = 0.5; //设置字间距
 
-
     //设置网址链接的属性
     _coretextLabel.showWebLink  = YES;
     _coretextLabel.webLinkFont = [UIFont systemFontOfSize:18.f];  //设置网址链接字体大小
     _coretextLabel.webLinkColor = [UIColor blueColor];  //设置网址链接字体颜色
     _coretextLabel.webLinkBackColor = [UIColor redColor];  //设置网址链接点击背景色
-
-
 
     //设置 #话题#的属性
     _coretextLabel.showTopicLink = YES;
@@ -154,13 +146,11 @@
     _coretextLabel.topicLinkColor = [UIColor redColor];
     _coretextLabel.topicLinkBackColor = [UIColor blackColor];
 
-
     //设置 @ 的属性
     _coretextLabel.showTrendLink = YES;
     _coretextLabel.trendLinkFont = [UIFont systemFontOfSize:18];
     _coretextLabel.trendLinkColor = [UIColor purpleColor];
     _coretextLabel.trendLinkBackColor = [UIColor darkGrayColor];
-
 
     //设置邮箱的属性
     _coretextLabel.showMailLink = YES;
