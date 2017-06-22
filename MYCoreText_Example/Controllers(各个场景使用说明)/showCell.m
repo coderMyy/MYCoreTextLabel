@@ -70,12 +70,10 @@
         _coretextLabel.customLinkColor = [UIColor greenColor];  //设置自定义链接字体颜色
         _coretextLabel.customLinkBackColor = [UIColor orangeColor];  //设置自定义链接点击背景色
         
-        
         //设置关键字的属性
         _coretextLabel.keywordFont = [UIFont systemFontOfSize:15];
         _coretextLabel.keyWordColor = [UIColor blueColor];  //设置关键字颜色
         _coretextLabel.keyWordBackColor = [UIColor yellowColor];  //设置关键字高亮背景色
-        
         
         _coretextLabel.delegate = self;   //设置代理 , 用于监听点击事件 以及接收点击内容等
     }

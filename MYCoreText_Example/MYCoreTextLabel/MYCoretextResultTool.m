@@ -268,7 +268,7 @@ static const char mailLinkKey;
 {
     NSMutableArray *weblinks = [NSMutableArray array];
     //正则匹配超链接
-    NSString *linkRegex = @"(http(s)?://)?([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&#=]*)?";
+    NSString *linkRegex = @"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)";
     NSRegularExpression *linkExpression = [NSRegularExpression regularExpressionWithPattern:linkRegex options:NSRegularExpressionCaseInsensitive error:nil];
     //遍历结果
     [linkExpression enumerateMatchesInString:rangeString options:NSMatchingReportCompletion range:NSMakeRange(0, rangeString.length) usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {

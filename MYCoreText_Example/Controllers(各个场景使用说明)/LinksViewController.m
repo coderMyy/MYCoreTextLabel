@@ -29,8 +29,30 @@
         _coretextLabel.webLinkFont = [UIFont systemFontOfSize:20]; //设置网址链接的字体大小
         _coretextLabel.webLinkColor = [UIColor greenColor]; //设置网址链接的颜色
         
+        //匹配 #话题#链接
+        _coretextLabel.showTopicLink = YES;
+        _coretextLabel.topicLinkColor  = [UIColor redColor];
+        _coretextLabel.topicLinkFont = [UIFont systemFontOfSize:20];
+        _coretextLabel.topicLinkBackColor = [UIColor grayColor];
+        
+        
+        //匹配 @ 链接
+        _coretextLabel.showTrendLink = YES;
+        //如果不设置任何相关信息 , 默认和普通文本大小一致  , 颜色默认蓝色
+        
+        
+        //匹配手机号链接
+        _coretextLabel.showPhoneLink = YES;
+        _coretextLabel.phoneLinkFont = [UIFont systemFontOfSize:15.f];
+        _coretextLabel.phoneLinkColor = [UIColor purpleColor];
+        _coretextLabel.phoneLinkBackColor = [UIColor brownColor];
+        
+        //匹配邮箱链接
+        _coretextLabel.showMailLink = YES;
+        //如果不设置任何相关信息 , 默认和普通文本大小一致  , 颜色默认蓝色
+        
         //设置自定义点击链接为  @"哥哥"
-        [_coretextLabel setText:@"阿南。#测试#现在每次吃栗子我都会想起父亲，想起小时候每到深秋，父亲#测试#在地里干农活都会在家乡的山间摘好多野栗子回来给我吃，他不给哥哥吃，他自己也不吃。只给我一个人吃。看到你在书里写给阿明的信，好几次我都哽咽了。阿明尚ww.dsa.cn且对你如此，可你却还的如此的爱他www.baidu.com。可对于我的父亲，我深觉自己做的这www.google.cn些微不足道，甚至不值一提。去年他动手术，我和哥哥送他去医院，晚上，我和哥哥离开，只留他#测试#一人在医院。第二日，我去医院@小明 看到手术后的他躺在病床上憔悴不已。母亲守在一旁。心揪成一团。三个月前哥哥大婚，看他和母亲忙前忙后，看到他满脸的胡渣以及母亲双鬓若隐若现的白发。更是心痛不已。www.123.com" customLinks:@[@"哥哥"] keywords:nil];
+        [_coretextLabel setText:@"阿南。#测试#现在每次吃栗子我都会想起父亲，想起小时候每到深秋，父亲#测试#在地里干农活都会在家乡的山间摘好多野栗子回来给我吃，他不给哥哥吃，他自己也不吃。只给我一个人吃。看到你在书里写给阿明的信，好几次我都哽咽了。阿明尚ww.dsa.cn且对你如此，可你却还的如此的爱他www.baidu.com。可对于我的父亲，我深觉自己做的这www.google.cn些微不足道，甚至不值一提。去年他动手术，我和哥哥送他去医院，晚上，我和哥哥离开，只留他#测试#一人在医院。第二日，我去医院@小明 看到手术后的他躺在病床上憔悴不已。母亲守在一旁。心揪成一团。三个月前哥哥大婚，看他和母亲忙前忙后，看到他满脸的胡渣以及母亲双鬓若隐若现的白发。更是心痛不已。www.123.com , 手机号链接13912345678 , 邮箱链接mengyao_block@outlook.com" customLinks:@[@"哥哥"] keywords:nil];
     }
     return _coretextLabel;
 }
