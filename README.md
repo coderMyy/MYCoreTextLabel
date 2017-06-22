@@ -19,6 +19,8 @@
 </p>
 </p>
 
+聊天气泡效果 , 请参照 <a>https://github.com/coderMyy/CocoaAsyncSocket_Demo<a/>
+
 ## 1. 静态图文文字混排 </p>
 
 ```
