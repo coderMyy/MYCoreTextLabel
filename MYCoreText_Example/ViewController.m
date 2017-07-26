@@ -80,7 +80,6 @@
             [self.navigationController pushViewController:imageVc animated:YES];
         }
             break;
-            
         case 2:
         {
             KeywordViewController *imageVc = [[KeywordViewController alloc]init];
