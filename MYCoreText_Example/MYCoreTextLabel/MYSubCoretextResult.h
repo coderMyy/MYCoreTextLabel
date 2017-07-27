@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger,MYLinkType){
 @property (nonatomic, strong) NSString *string; //切割表情字符串
 @property (nonatomic, assign) NSRange range;  //切割表情集range
 @property (nonatomic, assign,getter=isEmotion) BOOL isEmotion;
-@property (nonatomic, strong) NSArray *links; //每个结果里包含的链接
+@property (nonatomic, strong) NSMutableArray *links; //每个结果里包含的链接
 
 @end
 

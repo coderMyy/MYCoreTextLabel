@@ -36,6 +36,21 @@
  */
 + (void)keyWord:(NSArray<NSString *> *)keywords;
 
+/**
+ 需要成为链接的指定范围区间
+
+ @param ranges <#ranges description#>
+ */
++ (void)linkranges:(NSArray<NSValue *>*)ranges;
+/**
+ 是否展示相应的特点
+
+ @param web <#web description#>
+ @param trend <#trend description#>
+ @param topic <#topic description#>
+ @param phone <#phone description#>
+ @param mail <#mail description#>
+ */
 + (void)webLink:(BOOL)web trend:(BOOL)trend topic:(BOOL)topic phone:(BOOL)phone mail:(BOOL)mail;
 
 @end

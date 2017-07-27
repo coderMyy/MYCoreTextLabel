@@ -10,6 +10,14 @@
 
 @implementation MYSubCoretextResult
 
+- (NSMutableArray *)links
+{
+    if (!_links) {
+        _links = [NSMutableArray array];
+    }
+    return _links;
+}
+
 @end
 
 

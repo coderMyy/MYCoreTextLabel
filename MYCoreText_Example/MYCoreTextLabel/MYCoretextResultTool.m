@@ -18,6 +18,7 @@ static const char topicLinkKey;
 static const char trendLinkKey;
 static const char phoneLinkKey;
 static const char mailLinkKey;
+static const NSArray *linkranges;
 
 @implementation MYCoretextResultTool
 
@@ -31,13 +32,18 @@ static const char mailLinkKey;
     objc_setAssociatedObject(self ,&keyWordKey ,keywords ,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
++ (void)linkranges:(NSArray<NSValue *>*)ranges
+{
+    objc_setAssociatedObject(self, &linkranges, ranges, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 + (void)webLink:(BOOL)web trend:(BOOL)trend topic:(BOOL)topic phone:(BOOL)phone mail:(BOOL)mail
 {
-    objc_setAssociatedObject(self, &webLinkKey, @(web), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &webLinkKey,   @(web)  , OBJC_ASSOCIATION_ASSIGN);
     objc_setAssociatedObject(self, &topicLinkKey, @(topic), OBJC_ASSOCIATION_ASSIGN);
     objc_setAssociatedObject(self, &trendLinkKey, @(trend), OBJC_ASSOCIATION_ASSIGN);
     objc_setAssociatedObject(self, &phoneLinkKey, @(phone), OBJC_ASSOCIATION_ASSIGN);
-    objc_setAssociatedObject(self, &mailLinkKey, @(mail), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &mailLinkKey,  @(mail) , OBJC_ASSOCIATION_ASSIGN);
 }
 
 //以表情切割结果集
@@ -149,51 +155,54 @@ static const char mailLinkKey;
     subNormalResult.string    = rangeString;
     subNormalResult.isEmotion = NO;
     
-    BOOL showWeb   = [objc_getAssociatedObject(self, &webLinkKey) integerValue];
-    BOOL showTopic  = [objc_getAssociatedObject(self, &topicLinkKey) integerValue];
-    BOOL showTrend  = [objc_getAssociatedObject(self, &trendLinkKey) integerValue];
-    BOOL showPhone = [objc_getAssociatedObject(self, &phoneLinkKey) integerValue];
+    BOOL showWeb     = [objc_getAssociatedObject(self, &webLinkKey) integerValue];
+    BOOL showTopic   = [objc_getAssociatedObject(self, &topicLinkKey) integerValue];
+    BOOL showTrend   = [objc_getAssociatedObject(self, &trendLinkKey) integerValue];
+    BOOL showPhone   = [objc_getAssociatedObject(self, &phoneLinkKey) integerValue];
     BOOL showMail    = [objc_getAssociatedObject(self, &mailLinkKey) integerValue];
+    NSArray *ranges  = objc_getAssociatedObject(self, &linkranges);
     
-    NSMutableArray *links     = [NSMutableArray array];
     //匹配网址
     if (showWeb) {
         NSArray<MYLinkModel *> *webs             = [self regexWebs:rangeString];
-        [links addObjectsFromArray:webs];
+        [subNormalResult.links addObjectsFromArray:webs];
     }
     
     //匹配 @
     if (showTrend) {
         NSArray<MYLinkModel *> *trends           = [self regexTrend:rangeString];
-        [links addObjectsFromArray:trends];
+        [subNormalResult.links addObjectsFromArray:trends];
     }
     
     //匹配#话题#
     if (showTopic) {
         NSArray<MYLinkModel *> *topics           = [self regexTopic:rangeString];
-        [links addObjectsFromArray:topics];
+        [subNormalResult.links addObjectsFromArray:topics];
     }
     
     //匹配手机号码
     if (showPhone) {
         NSArray<MYLinkModel *> *phones          = [self regexPhone:rangeString];
-        [links addObjectsFromArray:phones];
+        [subNormalResult.links addObjectsFromArray:phones];
     }
     //匹配邮箱号
     if (showMail) {
-        NSArray<MYLinkModel *> *mails          = [self regexMail:rangeString];
-        [links addObjectsFromArray:mails];
+        NSArray<MYLinkModel *> *mails           = [self regexMail:rangeString];
+        [subNormalResult.links addObjectsFromArray:mails];
     }
     
     //匹配关键字
-    NSArray<MYLinkModel *> *keywords         = [self regexKeyword:rangeString];
-    [links addObjectsFromArray:keywords];
+    NSArray<MYLinkModel *> *keywords            = [self regexKeyword:rangeString];
+    [subNormalResult.links addObjectsFromArray:keywords];
     
     //匹配指定字符串
-    NSArray<MYLinkModel *> *tagStrs          = [self regexStr:rangeString];
-    [links addObjectsFromArray:tagStrs];
+    NSArray<MYLinkModel *> *tagStrs             = [self regexStr:rangeString];
+    [subNormalResult.links addObjectsFromArray:tagStrs];
     
-    subNormalResult.links     = links;
+    //匹配指定区间字符串
+    NSArray<MYLinkModel *> *rangeLinks          = [self givens:rangeString ranges:ranges resultRange:range];
+    [subNormalResult.links addObjectsFromArray:rangeLinks];
+    
     return subNormalResult;
 }
 
@@ -396,10 +405,11 @@ static const char mailLinkKey;
 + (NSArray<MYLinkModel *>*)regexStr:(NSString *)rangeString
 {
     
-    NSMutableArray *tagStrs = [NSMutableArray array];
     //正则匹配指定链接字符串
     NSArray *customLinks = objc_getAssociatedObject(self,&customlinksKey);
     if (!customLinks.count) return nil;
+    
+    NSMutableArray *tagStrs = [NSMutableArray array];
     
     [customLinks enumerateObjectsUsingBlock:^(NSString  *_Nonnull otherlink, NSUInteger idx, BOOL * _Nonnull stop) {
         
@@ -417,6 +427,25 @@ static const char mailLinkKey;
         }];
     }];
     return tagStrs;
+}
+
+#pragma mark - 指定区间字符串链接
++ (NSArray<MYLinkModel *> *)givens:(NSString *)rangeString ranges:(NSArray<NSValue *> *)ranges resultRange:(NSRange)rRange
+{
+    if (!ranges.count) return nil;
+    NSMutableArray *givenlinks = [NSMutableArray array];
+    for (NSValue *rangeValue in ranges) {
+        if (rangeValue.rangeValue.location >= rRange.location && rangeValue.rangeValue.location + rangeValue.rangeValue.length <= rRange.location + rRange.length) {
+          
+            NSRange inRange   = NSMakeRange(rangeValue.rangeValue.location - rRange.location, rangeValue.rangeValue.length);
+            MYLinkModel *link = [[MYLinkModel alloc]init];
+            link.range        = inRange;
+            link.linkText     = [rangeString substringWithRange:inRange];
+            link.linkType     = MYLinkTypeCustomLink;
+            [givenlinks addObject:link];
+        }
+    }
+    return givenlinks;
 }
 
 @end

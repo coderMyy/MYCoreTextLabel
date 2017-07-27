@@ -18,13 +18,13 @@
 @property (nonatomic, strong) UITextView *contentTextView;    //文本view
 @property (nonatomic, strong) NSMutableArray<MYLinkModel *> *links;   //所有的可点击链接模型
 @property (nonatomic, strong) NSMutableArray<MYSubCoretextResult *> *allResults;//所有结果
-@property (nonatomic, copy) eventCallback touchCallback;      //点击链接回调
 @property (nonatomic, copy) NSString *text; //文本
 @property (nonatomic, strong) NSArray *customLinks; //自定义链接
 @property (nonatomic, strong) NSArray *keywords;    // 关键字
 @property (nonatomic, strong) MYLinkModel *currentTouchLink; //记录当前手指所在链接模型
 @property (nonatomic, strong) NSMutableArray<MYLinkModel *> *clickLinksCache; //常规链接模型临时存储 (缓存的目的在于,点击时查询相应模型)
 @property (nonatomic, assign,getter=isKeywordConfiged) BOOL keywordConfig; //临时记录
+@property (nonatomic, strong) NSArray *linkranges; //用于存储指定范围链接
 
 @end
 
@@ -60,6 +60,8 @@
         [MYCoretextResultTool customLinks:_customLinks];
         //配置关键字
         [MYCoretextResultTool keyWord:_keywords];
+        //配置指定区间链接
+        [MYCoretextResultTool linkranges:self.linkranges];
         //配置需要展示的链接类型
         [MYCoretextResultTool webLink:_showWebLink trend:_showTrendLink topic:_showTopicLink phone:_showPhoneLink mail:_showMailLink];
         //剪切表情,获得表情以及链接结果集
@@ -72,48 +74,46 @@
 {
     if (!_links) {
         _links = [NSMutableArray array];
-        
         //重新生成可点击链接模型,进一步处理,完善包裹区域
         __weak typeof(self) weakself = self;
         [self.contentTextView.attributedText enumerateAttribute:canClickLinkTag inRange:NSMakeRange(0, self.contentTextView.attributedText.length) options:0 usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
            
-            NSString *linkString         = value;
+            NSString *linkString           = value;
             if (!linkString.length) return ;//过滤空字符
             if ([_keywords containsObject:linkString]) return ;//屏蔽关键字
-                
-            MYLinkModel *link          = [[MYLinkModel alloc]init];
+            MYLinkModel *link              = [[MYLinkModel alloc]init];
             link.range                       = range;
             link.linkText                    = linkString;
             //链接类型整理
-            NSPredicate *predicate   = [NSPredicate predicateWithFormat:@"linkText = %@",linkString];
-            NSArray * norResults      = [weakself.clickLinksCache filteredArrayUsingPredicate:predicate];
-            MYLinkModel *cachelink = norResults.firstObject;
+            NSPredicate *predicate         = [NSPredicate predicateWithFormat:@"linkText = %@",linkString];
+            NSArray * norResults           = [weakself.clickLinksCache filteredArrayUsingPredicate:predicate];
+            MYLinkModel *cachelink         = norResults.firstObject;
             if (cachelink) {
                 link.linkType              = cachelink.linkType;
                 switch (link.linkType) {
                     case MYLinkTypeCustomLink:
                         link.clickBackColor = _customLinkBackColor;
-                        link.clickFont         = _customLinkFont;
+//                        link.clickFont         = _customLinkFont;
                         break;
                     case MYLinkTypetWebLink:
                         link.clickBackColor = _webLinkBackColor;
-                        link.clickFont         = _webLinkFont;
+//                        link.clickFont         = _webLinkFont;
                         break;
                     case MYLinkTypeMailLink:
                         link.clickBackColor = _mailLinkBackColor;
-                        link.clickFont         = _mailLinkFont;
+//                        link.clickFont         = _mailLinkFont;
                         break;
                     case MYLinkTypePhoneLink:
                         link.clickBackColor = _phoneLinkBackColor;
-                        link.clickFont         = _phoneLinkFont;
+//                        link.clickFont         = _phoneLinkFont;
                         break;
                     case MYLinkTypetTopicLink:
                         link.clickBackColor = _topicLinkBackColor;
-                        link.clickFont         = _topicLinkFont;
+//                        link.clickFont         = _topicLinkFont;
                         break;
                     case MYLinkTypetTrendLink:
                         link.clickBackColor = _trendLinkBackColor;
-                        link.clickFont         = _trendLinkFont;
+//                        link.clickFont         = _trendLinkFont;
                         break;
                     default:
                         break;
@@ -167,15 +167,9 @@
 #pragma mark - 添加指定区间链接 , 公共接口
 - (void)setText:(NSString *)text linkRanges:(NSArray<NSValue *> *) ranges keywords:(NSArray<NSString *> *)keywords
 {
-    _text   = text;
-    _keywords = keywords;
-    NSMutableArray *customLinks = [NSMutableArray array];
-    for (NSValue *rangeValue in ranges) {
-        NSRange range = rangeValue.rangeValue;
-        if (range.location + range.length >text.length) continue;
-        [customLinks addObject:[text substringWithRange:range]];
-    }
-    _customLinks = customLinks;
+    _text       = text;
+    _keywords   = keywords;
+    _linkranges = ranges;
 }
 
 #pragma mark - 开始渲染
@@ -507,45 +501,45 @@
     }
     
     //文本内容
-    if (!_textFont)  _textFont                   = [UIFont systemFontOfSize:14.f];
-    if (!_textColor) _textColor                  = [UIColor blackColor];
+    if (!_textFont)  _textFont                     = [UIFont systemFontOfSize:14.f];
+    if (!_textColor) _textColor                    = [UIColor blackColor];
     if (!_imageSize.width||
-        !_imageSize.height) _imageSize           = CGSizeMake(_textFont.lineHeight, _textFont.lineHeight);
-    if (!_linkBackAlpha) _linkBackAlpha          = 0.5f;
+        !_imageSize.height) _imageSize             = CGSizeMake(_textFont.lineHeight, _textFont.lineHeight);
+    if (!_linkBackAlpha) _linkBackAlpha            = 0.5f;
 
     //网址链接
-    if (!_webLinkFont) _webLinkFont              = _textFont;
-    if (!_webLinkColor) _webLinkColor            = [UIColor blueColor];
-    if (!_webLinkBackColor) _webLinkBackColor    = [UIColor blueColor];
+    if (!_webLinkFont) _webLinkFont                = _textFont;
+    if (!_webLinkColor) _webLinkColor              = [UIColor blueColor];
+    if (!_webLinkBackColor) _webLinkBackColor      = [UIColor blueColor];
     
     //话题链接
     if (!_topicLinkFont) _topicLinkFont               = _textFont;
-    if (!_topicLinkColor) _topicLinkColor           = [UIColor blueColor];;
+    if (!_topicLinkColor) _topicLinkColor          = [UIColor blueColor];;
     if (!_topicLinkBackColor) _topicLinkBackColor  = [UIColor blueColor];
     
     //@链接
-    if (!_trendLinkFont) _trendLinkFont             = _textFont;
+    if (!_trendLinkFont) _trendLinkFont            = _textFont;
     if (!_trendLinkColor) _trendLinkColor          = [UIColor blueColor];
-    if (!_trendLinkBackColor) _trendLinkBackColor   = [UIColor blueColor];
+    if (!_trendLinkBackColor) _trendLinkBackColor  = [UIColor blueColor];
     
     //手机号链接
-    if (!_phoneLinkFont) _phoneLinkFont           = _textFont;
-    if (!_phoneLinkColor) _phoneLinkColor        = [UIColor blueColor];
-    if (!_phoneLinkBackColor) _phoneLinkBackColor = [UIColor blueColor];
+    if (!_phoneLinkFont) _phoneLinkFont            = _textFont;
+    if (!_phoneLinkColor) _phoneLinkColor          = [UIColor blueColor];
+    if (!_phoneLinkBackColor) _phoneLinkBackColor  = [UIColor blueColor];
     
     //邮箱链接
-    if (!_mailLinkFont) _mailLinkFont                 = _textFont;
-    if (!_mailLinkColor) _mailLinkColor              = [UIColor blueColor];
-    if (!_mailLinkBackColor) _mailLinkBackColor   = [UIColor blueColor];
+    if (!_mailLinkFont) _mailLinkFont              = _textFont;
+    if (!_mailLinkColor) _mailLinkColor            = [UIColor blueColor];
+    if (!_mailLinkBackColor) _mailLinkBackColor    = [UIColor blueColor];
     
     //自定义链接
-    if (!_customLinkFont) _customLinkFont        = _textFont;
-    if (!_customLinkColor) _customLinkColor      = [UIColor blueColor];
+    if (!_customLinkFont) _customLinkFont          = _textFont;
+    if (!_customLinkColor) _customLinkColor        = [UIColor blueColor];
     if (!_customLinkBackColor) _customLinkBackColor = [UIColor blueColor];
     
     //关键字
-    if (!_keyWordColor) _keyWordColor            = [UIColor blackColor];
-    if (!_keyWordBackColor) _keyWordBackColor    = [UIColor yellowColor];
+    if (!_keyWordColor) _keyWordColor              = [UIColor blackColor];
+    if (!_keyWordBackColor) _keyWordBackColor      = [UIColor yellowColor];
 }
 
 #pragma mark - 计算尺寸
@@ -557,7 +551,6 @@
     if (!self.contentTextView.attributedText.length) {
         return CGSizeZero;
     }
-    
     CGSize viewSize = [self.contentTextView sizeThatFits:CGSizeMake(size.width, size.height)];
     return viewSize;
 }
