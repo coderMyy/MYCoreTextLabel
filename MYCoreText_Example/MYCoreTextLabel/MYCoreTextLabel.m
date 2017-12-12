@@ -538,6 +538,7 @@
     if (!_customLinkBackColor) _customLinkBackColor = [UIColor blueColor];
     
     //关键字
+    if (!_keywordFont) _keywordFont                = _textFont;
     if (!_keyWordColor) _keyWordColor              = [UIColor blackColor];
     if (!_keyWordBackColor) _keyWordBackColor      = [UIColor yellowColor];
 }
