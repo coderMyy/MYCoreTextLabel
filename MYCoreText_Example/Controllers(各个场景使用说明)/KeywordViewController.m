@@ -25,7 +25,7 @@
         _coretextLabel.textFont = [UIFont systemFontOfSize:14.f]; //设置文本大小
         _coretextLabel.textColor = [UIColor brownColor];       // 设置文本颜色
         _coretextLabel.lineSpacing = 2;    //设置行间距
-        _coretextLabel.wordSpacing = 1.5;  //设置字间距
+//        _coretextLabel.wordSpacing = 1.5;  //设置字间距
         
         
         //设置关键字属性

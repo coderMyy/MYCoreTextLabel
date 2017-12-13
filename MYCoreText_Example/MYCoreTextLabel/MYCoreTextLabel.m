@@ -42,11 +42,13 @@
 {
     if (!_contentTextView) {
         _contentTextView                        = [[UITextView alloc]init];
-        _contentTextView.textContainerInset     = UIEdgeInsetsMake(1, 1, 1, 1);
+        _contentTextView.textContainerInset     = UIEdgeInsetsMake(1,1,1,1);
+//        _contentTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         _contentTextView.editable               = NO;
         _contentTextView.userInteractionEnabled = NO;
         _contentTextView.scrollEnabled          = NO;
         _contentTextView.backgroundColor        = [UIColor clearColor];
+        _contentTextView.textAlignment          = NSTextAlignmentLeft;
     }
     return _contentTextView;
 }
@@ -148,10 +150,6 @@
 {
     [super layoutSubviews];
     self.contentTextView.frame = self.bounds;
-    if (_keywordConfig) return;
-    //设置高亮关键字
-    [self keyWord:[[NSMutableAttributedString alloc]initWithAttributedString:self.contentTextView.attributedText]];
-    _keywordConfig = YES;
 }
 
 
@@ -162,6 +160,9 @@
     _text        = text;
     _customLinks = customLinks;
     _keywords    = keywords;
+    
+    //渲染
+    [self render];
 }
 
 #pragma mark - 添加指定区间链接 , 公共接口
@@ -170,6 +171,9 @@
     _text       = text;
     _keywords   = keywords;
     _linkranges = ranges;
+    
+    //渲染
+    [self render];
 }
 
 #pragma mark - 开始渲染
@@ -180,6 +184,13 @@
     //复用处理
     [self reuseHandle];
     [self configAttribute:_text];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.00001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (_keywordConfig) return;
+        //设置高亮关键字
+        [self keyWord:[[NSMutableAttributedString alloc]initWithAttributedString:self.contentTextView.attributedText]];
+        _keywordConfig = YES;
+    });
 }
 
 #pragma mark - 配置属性
@@ -546,9 +557,6 @@
 #pragma mark - 计算尺寸
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    //渲染
-    [self render];
-    
     if (!self.contentTextView.attributedText.length) {
         return CGSizeZero;
     }
