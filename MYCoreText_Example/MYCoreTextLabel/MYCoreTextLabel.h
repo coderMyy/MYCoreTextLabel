@@ -15,22 +15,21 @@
 #import <UIKit/UIKit.h>
 #import "MYCoretextResultTool.h"
 
-
-/**
- 事件回调
-
- @param linkString <#linkString description#>
- */
-typedef void(^eventCallback)(NSString *linkString);
+@class MYCoreTextLabel;
 
 @protocol MYCoreTextLabelDelegate <NSObject>
 
 @optional
 
-//代理回调
-- (void)linkText:(NSString *)clickString type:(MYLinkType)linkType;
+//链接点击回调
+- (void)coreTextLabelLinkTouch:(MYCoreTextLabel *)coreTextLabel link:(NSString *)linkString type:(MYLinkType)linkType;
+//除开链接以外点击回调
+- (void)coreTextLabelBlankTouch:(MYCoreTextLabel *)coreTextLabel ;
 
 @end
+
+
+
 
 @interface MYCoreTextLabel : UIView
 

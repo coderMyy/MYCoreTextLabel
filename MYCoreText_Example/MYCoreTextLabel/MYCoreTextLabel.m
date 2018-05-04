@@ -317,6 +317,12 @@
     UITouch *touch         = [touches anyObject];
     CGPoint touchPoint     = [touch locationInView:self.contentTextView];
     MYLinkModel *linkModel = [self selectedLink:touchPoint];
+    if (!linkModel) {
+        if ([self.delegate respondsToSelector:@selector(coreTextLabelBlankTouch:)]) {
+            [self.delegate coreTextLabelBlankTouch:self];
+        }
+        return;
+    }
     [self addSelectedAnimation:linkModel];
 }
 
@@ -361,8 +367,8 @@
                 linkModel             = link;
                 self.currentTouchLink = link; //记录当前点击
                 //回调内容
-                if ([self.delegate respondsToSelector:@selector(linkText:type:)]) {
-                    [self.delegate linkText:link.linkText type:link.linkType];
+                if ([self.delegate respondsToSelector:@selector(coreTextLabelLinkTouch:link:type:)]) {
+                    [self.delegate coreTextLabelLinkTouch:self link:linkModel.linkText type:linkModel.linkType];
                 }
                 break;
             }
@@ -393,6 +399,7 @@
 #pragma mark - 点击动画
 - (void)dismissAnimation
 {
+    self.currentTouchLink = nil;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
         for (UIView *coverView in self.subviews) {
