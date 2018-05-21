@@ -180,7 +180,7 @@
 - (void)render
 {
     //属性矫正
-    [self judge];
+    if (![self judge]) return;
     //复用处理
     [self reuseHandle];
     [self configAttribute:_text];
@@ -510,14 +510,12 @@
 }
 
 #pragma mark - 判断属性
-- (void)judge
+- (BOOL)judge
 {
     
     if (!_text.length) {
-        _text = @" ";
-        return;
+        return NO;
     }
-    
     //文本内容
     if (!_textFont)  _textFont                     = [UIFont systemFontOfSize:14.f];
     if (!_textColor) _textColor                    = [UIColor blackColor];
@@ -559,13 +557,14 @@
     if (!_keywordFont) _keywordFont                = _textFont;
     if (!_keyWordColor) _keyWordColor              = [UIColor blackColor];
     if (!_keyWordBackColor) _keyWordBackColor      = [UIColor yellowColor];
+    return YES;
 }
 
 #pragma mark - 计算尺寸
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    if (!self.contentTextView.attributedText.length) {
-        return CGSizeZero;
+    if (!self.contentTextView.attributedText.length||!_text.length) {
+        return CGSizeMake(0,0);
     }
     CGSize viewSize = [self.contentTextView sizeThatFits:CGSizeMake(size.width, size.height)];
     return viewSize;
