@@ -21,7 +21,6 @@
 @property (nonatomic, strong) MYLinkModel *currentTouchLink; //记录当前手指所在链接模型
 @property (nonatomic, strong) NSMutableArray<MYLinkModel *> *clickLinksCache; //常规链接模型临时存储 (缓存的目的在于,点击时查询相应模型)
 @property (nonatomic, assign,getter=isKeywordConfiged) BOOL keywordConfig; //临时记录
-@property (nonatomic, strong) NSArray *linkranges; //用于存储指定范围链接
 
 @end
 
@@ -60,7 +59,7 @@
         //配置关键字
         [MYCoretextResultTool keyWord:_keywords];
         //配置指定区间链接
-        [MYCoretextResultTool linkranges:self.linkranges];
+        [MYCoretextResultTool linkranges:self.cusLinkRanges];
         //配置需要展示的链接类型
         [MYCoretextResultTool webLink:_showWebLink trend:_showTrendLink topic:_showTopicLink phone:_showPhoneLink mail:_showMailLink];
         //剪切表情,获得表情以及链接结果集
@@ -159,17 +158,17 @@
     [self reuseHandle];
     [self configAttribute:_text];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.00001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (_keywordConfig) return;
-        //设置高亮关键字
-        [self keyWord:[[NSMutableAttributedString alloc]initWithAttributedString:self.contentTextView.attributedText]];
-        _keywordConfig = YES;
-    });
-    
     if (!self.contentTextView.attributedText.length||!_text.length) {
         return CGSizeZero;
     }
     CGSize viewSize = [self.contentTextView sizeThatFits:CGSizeMake(maxWidth,maxHeight)];
+    self.contentTextView.frame = CGRectMake(0,0,viewSize.width,viewSize.height);
+
+    //关键字
+    if (!_keywordConfig) {
+        [self keyWord:[[NSMutableAttributedString alloc]initWithAttributedString:self.contentTextView.attributedText]];
+        _keywordConfig = YES;
+    }
     return viewSize;
 }
 

@@ -53,9 +53,9 @@
 //关键字
 @property (nonatomic, strong) NSArray<NSString *> *keywords;
 //自定义链接内容（指定某些内容可点击）
-@property (nonatomic, strong) NSArray *customLinks;
+@property (nonatomic, strong) NSArray<NSString *> *customLinks;
 //指定链接区间(指定某些区间的内容可点击，多用于类似微信朋友圈 aaa回复了bbb)
-@property (nonatomic, strong) NSArray *cusLinkRanges;
+@property (nonatomic, strong) NSArray<NSValue *> *cusLinkRanges;
 //内容字体大小（除开链接特殊字以外内容的字体大小）,默认14.f
 @property (nonatomic, strong) UIFont *textFont;
 //内容字体颜色（除开链接特殊字以外的内容）,默认黑色
