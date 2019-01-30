@@ -132,6 +132,18 @@
     return _links;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder]) {
+        [self addSubview:self.contentTextView];
+    }
+    return self;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -146,6 +158,11 @@
 {
     [super layoutSubviews];
     self.contentTextView.frame = self.bounds;
+    //关键字
+    if (!_keywordConfig) {
+        [self keyWord:[[NSMutableAttributedString alloc]initWithAttributedString:self.contentTextView.attributedText]];
+        _keywordConfig = YES;
+    }
 }
 
 
@@ -164,11 +181,6 @@
     CGSize viewSize = [self.contentTextView sizeThatFits:CGSizeMake(maxWidth,maxHeight)];
     self.contentTextView.frame = CGRectMake(0,0,viewSize.width,viewSize.height);
 
-    //关键字
-    if (!_keywordConfig) {
-        [self keyWord:[[NSMutableAttributedString alloc]initWithAttributedString:self.contentTextView.attributedText]];
-        _keywordConfig = YES;
-    }
     return viewSize;
 }
 

@@ -24,6 +24,9 @@
 		B8894BE91E816D3100CC06DA /* LinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8894BE11E816D3100CC06DA /* LinksViewController.m */; };
 		B8894BEA1E816D3100CC06DA /* showCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8894BE31E816D3100CC06DA /* showCell.m */; };
 		B8894BEB1E816D3100CC06DA /* tableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B8894BE51E816D3100CC06DA /* tableViewModel.m */; };
+		B9B3BAE822014B3C005C76D2 /* XibViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9B3BAE722014B3C005C76D2 /* XibViewController.m */; };
+		B9B3BAF722015981005C76D2 /* XibTestView.m in Sources */ = {isa = PBXBuildFile; fileRef = B9B3BAF622015981005C76D2 /* XibTestView.m */; };
+		B9B3BAF92201598B005C76D2 /* XibTestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B9B3BAF82201598B005C76D2 /* XibTestView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +81,11 @@
 		B8894BE31E816D3100CC06DA /* showCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = showCell.m; sourceTree = "<group>"; };
 		B8894BE41E816D3100CC06DA /* tableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tableViewModel.h; sourceTree = "<group>"; };
 		B8894BE51E816D3100CC06DA /* tableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tableViewModel.m; sourceTree = "<group>"; };
+		B9B3BAE622014B3C005C76D2 /* XibViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XibViewController.h; sourceTree = "<group>"; };
+		B9B3BAE722014B3C005C76D2 /* XibViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XibViewController.m; sourceTree = "<group>"; };
+		B9B3BAF522015981005C76D2 /* XibTestView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XibTestView.h; sourceTree = "<group>"; };
+		B9B3BAF622015981005C76D2 /* XibTestView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XibTestView.m; sourceTree = "<group>"; };
+		B9B3BAF82201598B005C76D2 /* XibTestView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = XibTestView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +201,11 @@
 				B8894BDF1E816D3100CC06DA /* KeywordViewController.m */,
 				B8894BE01E816D3100CC06DA /* LinksViewController.h */,
 				B8894BE11E816D3100CC06DA /* LinksViewController.m */,
+				B9B3BAE622014B3C005C76D2 /* XibViewController.h */,
+				B9B3BAE722014B3C005C76D2 /* XibViewController.m */,
+				B9B3BAF522015981005C76D2 /* XibTestView.h */,
+				B9B3BAF622015981005C76D2 /* XibTestView.m */,
+				B9B3BAF82201598B005C76D2 /* XibTestView.xib */,
 				B8894BE21E816D3100CC06DA /* showCell.h */,
 				B8894BE31E816D3100CC06DA /* showCell.m */,
 				B8894BE41E816D3100CC06DA /* tableViewModel.h */,
@@ -309,6 +322,7 @@
 			files = (
 				B801264C1E56BFAF006BAF70 /* LaunchScreen.storyboard in Resources */,
 				B80126491E56BFAF006BAF70 /* Assets.xcassets in Resources */,
+				B9B3BAF92201598B005C76D2 /* XibTestView.xib in Resources */,
 				B80126471E56BFAF006BAF70 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -336,6 +350,7 @@
 			files = (
 				B8894BE81E816D3100CC06DA /* KeywordViewController.m in Sources */,
 				B8894BEA1E816D3100CC06DA /* showCell.m in Sources */,
+				B9B3BAE822014B3C005C76D2 /* XibViewController.m in Sources */,
 				B80126991E56C016006BAF70 /* MYCoreTextLabel.m in Sources */,
 				B80126441E56BFAF006BAF70 /* ViewController.m in Sources */,
 				B8894BE61E816D3100CC06DA /* DetailViewController.m in Sources */,
@@ -343,6 +358,7 @@
 				B801269B1E56C016006BAF70 /* MYSubCoretextResult.m in Sources */,
 				B8894BE71E816D3100CC06DA /* ImageViewController.m in Sources */,
 				B801263E1E56BFAF006BAF70 /* main.m in Sources */,
+				B9B3BAF722015981005C76D2 /* XibTestView.m in Sources */,
 				B8894BE91E816D3100CC06DA /* LinksViewController.m in Sources */,
 				B801269A1E56C016006BAF70 /* MYCoretextResultTool.m in Sources */,
 				B8894BEB1E816D3100CC06DA /* tableViewModel.m in Sources */,

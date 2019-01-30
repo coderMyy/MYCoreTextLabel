@@ -11,6 +11,7 @@
 #import "LinksViewController.h"
 #import "KeywordViewController.h"
 #import "DetailViewController.h"
+#import "XibViewController.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -24,7 +25,7 @@
 - (NSArray *)munesArray
 {
     if (!_munesArray) {
-        _munesArray = @[@"只展示图片/表情,其他链接不展示",@"只展示链接,其他不展示",@"只展示关键字,其他不展示",@"最复杂的情况,所有特性都展示"];
+        _munesArray = @[@"只展示图片/表情,其他链接不展示",@"只展示链接,其他不展示",@"只展示关键字,其他不展示",@"最复杂的情况,所有特性都展示",@"xib情况"];
     }
     return _munesArray;
 }
@@ -93,6 +94,11 @@
             [self.navigationController pushViewController:imageVc animated:YES];
         }
             break;
+        case 4:
+        {
+            XibViewController *xib = [XibViewController new];
+            [self.navigationController pushViewController:xib animated:YES];
+        }
         default:
             break;
     }
