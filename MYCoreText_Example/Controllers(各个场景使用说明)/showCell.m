@@ -96,10 +96,11 @@
     _model = model;
     
     //赋值
-    [self.coretextLabel setText:model.text customLinks:@[@"一个自定义链接",@"另外一个自定义链接"] keywords:@[@"关键字",@"star",@"fork"]];
-    //计算高度
-    CGSize size = [self.coretextLabel sizeThatFits:CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    
+    self.coretextLabel.text = model.text;
+    self.coretextLabel.customLinks = @[@"一个自定义链接",@"另外一个自定义链接"];
+    self.coretextLabel.keywords = @[@"关键字",@"star",@"fork"];
+    //开始渲染，计算高度
+    CGSize size = [self.coretextLabel renderForMaxWith:[UIScreen mainScreen].bounds.size.width maxHeight:[UIScreen mainScreen].bounds.size.height];
     self.coretextLabel.frame = CGRectMake(0, 20, size.width, size.height);
     model.height = size.height + 40;
 }

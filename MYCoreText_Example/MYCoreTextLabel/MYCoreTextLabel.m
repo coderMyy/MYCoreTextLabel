@@ -18,9 +18,6 @@
 @property (nonatomic, strong) UITextView *contentTextView;    //文本view
 @property (nonatomic, strong) NSMutableArray<MYLinkModel *> *links;   //所有的可点击链接模型
 @property (nonatomic, strong) NSMutableArray<MYSubCoretextResult *> *allResults;//所有结果
-@property (nonatomic, copy) NSString *text; //文本
-@property (nonatomic, strong) NSArray *customLinks; //自定义链接
-@property (nonatomic, strong) NSArray *keywords;    // 关键字
 @property (nonatomic, strong) MYLinkModel *currentTouchLink; //记录当前手指所在链接模型
 @property (nonatomic, strong) NSMutableArray<MYLinkModel *> *clickLinksCache; //常规链接模型临时存储 (缓存的目的在于,点击时查询相应模型)
 @property (nonatomic, assign,getter=isKeywordConfiged) BOOL keywordConfig; //临时记录
@@ -153,34 +150,11 @@
 }
 
 
-
-#pragma mark - 添加指定字符串链接,关键字,公共接口
-- (void)setText:(NSString *)text customLinks:(NSArray<NSString *> *)customLinks keywords:(NSArray<NSString *> *)keywords
-{
-    _text        = text;
-    _customLinks = customLinks;
-    _keywords    = keywords;
-    
-    //渲染
-    [self render];
-}
-
-#pragma mark - 添加指定区间链接 , 公共接口
-- (void)setText:(NSString *)text linkRanges:(NSArray<NSValue *> *) ranges keywords:(NSArray<NSString *> *)keywords
-{
-    _text       = text;
-    _keywords   = keywords;
-    _linkranges = ranges;
-    
-    //渲染
-    [self render];
-}
-
 #pragma mark - 开始渲染
-- (void)render
+- (CGSize)renderForMaxWith:(CGFloat)maxWidth maxHeight:(CGFloat)maxHeight
 {
     //属性矫正
-    if (![self judge]) return;
+    if (![self judge]) return CGSizeZero;
     //复用处理
     [self reuseHandle];
     [self configAttribute:_text];
@@ -191,6 +165,12 @@
         [self keyWord:[[NSMutableAttributedString alloc]initWithAttributedString:self.contentTextView.attributedText]];
         _keywordConfig = YES;
     });
+    
+    if (!self.contentTextView.attributedText.length||!_text.length) {
+        return CGSizeZero;
+    }
+    CGSize viewSize = [self.contentTextView sizeThatFits:CGSizeMake(maxWidth,maxHeight)];
+    return viewSize;
 }
 
 #pragma mark - 配置属性
@@ -558,16 +538,6 @@
     if (!_keyWordColor) _keyWordColor              = [UIColor blackColor];
     if (!_keyWordBackColor) _keyWordBackColor      = [UIColor yellowColor];
     return YES;
-}
-
-#pragma mark - 计算尺寸
-- (CGSize)sizeThatFits:(CGSize)size
-{
-    if (!self.contentTextView.attributedText.length||!_text.length) {
-        return CGSizeMake(0,0);
-    }
-    CGSize viewSize = [self.contentTextView sizeThatFits:CGSizeMake(size.width, size.height)];
-    return viewSize;
 }
 
 
