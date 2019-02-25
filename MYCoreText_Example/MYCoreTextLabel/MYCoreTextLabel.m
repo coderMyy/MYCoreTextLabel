@@ -320,6 +320,9 @@
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self dismissAnimation];
+    if ([self.delegate respondsToSelector:@selector(coreTextLabelLinkTouch:link:type:)]) {
+        [self.delegate coreTextLabelLinkTouch:self link:self.currentTouchLink.linkText type:self.currentTouchLink.linkType];
+    }
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -358,9 +361,9 @@
                 linkModel             = link;
                 self.currentTouchLink = link; //记录当前点击
                 //回调内容
-                if ([self.delegate respondsToSelector:@selector(coreTextLabelLinkTouch:link:type:)]) {
-                    [self.delegate coreTextLabelLinkTouch:self link:linkModel.linkText type:linkModel.linkType];
-                }
+//                if ([self.delegate respondsToSelector:@selector(coreTextLabelLinkTouch:link:type:)]) {
+//                    [self.delegate coreTextLabelLinkTouch:self link:linkModel.linkText type:linkModel.linkType];
+//                }
                 break;
             }
         }
