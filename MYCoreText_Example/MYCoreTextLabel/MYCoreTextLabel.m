@@ -320,9 +320,12 @@
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self dismissAnimation];
-    if ([self.delegate respondsToSelector:@selector(coreTextLabelLinkTouch:link:type:)]) {
-        [self.delegate coreTextLabelLinkTouch:self link:self.currentTouchLink.linkText type:self.currentTouchLink.linkType];
-    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if ([self.delegate respondsToSelector:@selector(coreTextLabelLinkTouch:link:type:)]) {
+            [self.delegate coreTextLabelLinkTouch:self link:self.currentTouchLink.linkText type:self.currentTouchLink.linkType];
+        }
+        self.currentTouchLink = nil;
+    });
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -338,12 +341,14 @@
     }
     if (!isContained) {
      [self dismissAnimation];
+     self.currentTouchLink = nil;
     }
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self dismissAnimation];
+    self.currentTouchLink = nil;
 }
 
 
@@ -393,7 +398,6 @@
 #pragma mark - 点击动画
 - (void)dismissAnimation
 {
-    self.currentTouchLink = nil;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
         for (UIView *coverView in self.subviews) {
