@@ -325,6 +325,10 @@
         if ([self.delegate respondsToSelector:@selector(coreTextLabelLinkTouch:link:type:)]) {
             [self.delegate coreTextLabelLinkTouch:self link:self.currentTouchLink.linkText type:self.currentTouchLink.linkType];
         }
+        if ([self.delegate respondsToSelector:@selector(coreTextLabelLinkTouch:link:type:linkRange:)]) {
+            [self.delegate coreTextLabelLinkTouch:self link:self.currentTouchLink.linkText type:self.currentTouchLink.linkType linkRange:self.currentTouchLink.range];
+        }
+        
         self.currentTouchLink = nil;
     });
 }

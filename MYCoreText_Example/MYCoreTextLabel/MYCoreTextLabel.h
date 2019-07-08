@@ -25,6 +25,7 @@
 - (void)coreTextLabelLinkTouch:(MYCoreTextLabel *)coreTextLabel link:(NSString *)linkString type:(MYLinkType)linkType;
 //除开链接以外点击回调
 - (void)coreTextLabelBlankTouch:(MYCoreTextLabel *)coreTextLabel ;
+- (void)coreTextLabelLinkTouch:(MYCoreTextLabel *)coreTextLabel link:(NSString *)linkString type:(MYLinkType)linkType linkRange:(NSRange)range;
 
 @end
 
